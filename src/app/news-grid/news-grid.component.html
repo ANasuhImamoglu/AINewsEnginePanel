@@ -1,0 +1,12 @@
+<h2>Haberler Grid</h2>
+<div class="grid-container">
+  <div class="grid-item" *ngFor="let haber of haberler">
+    <h3>{{ haber?.baslik }}</h3>
+    <p>{{ haber?.icerik | slice:0:100 }}...</p>
+    <img *ngIf="haber?.resimUrl" [src]="haber.resimUrl" alt="Haber Resmi" class="news-image">
+    <p>Yayın: {{ haber?.yayinTarihi }}</p>
+    <p>Durum: {{ haber?.onaylandi ? 'Onaylandı' : 'Onay Bekliyor' }}</p>
+    <!-- <button (click)="ahmetButonTest(haber)">Onayla</button> -->
+     <button *ngIf="!haber.onaylandi" (click)="approveNews(haber.id)">Kabul Et</button>
+  </div>
+</div>
