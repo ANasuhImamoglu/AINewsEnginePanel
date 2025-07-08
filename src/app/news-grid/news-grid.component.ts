@@ -9,6 +9,7 @@ import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { NewsService, Haber } from '../services/news.service';
 import { NewsDialogComponent } from './news-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-news-grid',
@@ -35,7 +36,8 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
   constructor(
     private newsService: NewsService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router // Router'ı enjekte edin
   ) { }
 
   ngOnInit(): void {
@@ -60,18 +62,7 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openNewsDialog(haber: Haber): void {
-    const dialogRef = this.dialog.open(NewsDialogComponent, {
-      width: '600px',
-      data: haber
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'approve') {
-        this.approveNews(haber.id);
-      }
-    });
-  }
+  /* Removed duplicate openNewsDialog implementation */
 
   approveNews(id: number): void {
     this.newsService.approveNews(id).subscribe({
@@ -98,4 +89,39 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
     }
     return text;
   }
+
+
+
+
+  openNewsDialog(haber: Haber): void {
+        this.newsService.incrementClickCount(haber.id).subscribe({
+            next: () => console.log(`Tıklanma sayısı artırıldı: ${haber.id}`),
+            error: (err) => console.error('Tıklanma sayısı artırılamadı:', err)
+        });
+
+        const dialogRef = this.dialog.open(NewsDialogComponent, {
+            width: '600px',
+            data: haber
+        });
+
+        const readTimer = setTimeout(() => {
+            this.newsService.incrementReadCount(haber.id).subscribe({
+                next: () => console.log(`Okunma sayısı artırıldı: ${haber.id}`),
+                error: (err) => console.error('Okunma sayısı artırılamadı:', err)
+            });
+        }, 4000); // 4 saniye
+
+        dialogRef.afterClosed().subscribe(() => {
+            clearTimeout(readTimer);
+            this.loadNews();
+        });
+    }
+
+    navigateToMostReadClicked(): void {
+        this.router.navigate(['/most-read-clicked']);
+    }
 }
+
+
+
+  

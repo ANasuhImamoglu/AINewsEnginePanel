@@ -3,49 +3,57 @@ import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { NewsService } from '../services/news.service'; // NewsService'i import edin
+import { Haber } from '../services/news.service'; // Haber modelini import edin
+
 
 @Component({
   selector: 'app-news-dialog',
   standalone: true,
   imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule],
   template: `
-    <div class="dialog-container">
-      <h2 mat-dialog-title>{{ data.baslik }}</h2>
-      <mat-dialog-content class="dialog-content">
-        <div class="news-details">
-          <div class="detail-item">
-            <strong>İçerik:</strong>
-            <p>{{ data.icerik }}</p>
-          </div>
-          <div class="detail-item">
-            <strong>Yayın Tarihi:</strong>
-            <p>{{ data.yayinTarihi | date:'dd/MM/yyyy HH:mm' }}</p>
-          </div>
-          <div class="detail-item">
-            <strong>Kategori ID:</strong>
-            <p>{{ data.kategoriId || 'Belirtilmemiş' }}</p>
-          </div>
-          <div class="detail-item" *ngIf="data.resimUrl">
-            <strong>Resim:</strong>
-            <img [src]="data.resimUrl" alt="Haber Resmi" class="news-image">
-          </div>
-          <div class="detail-item">
-            <strong>Durum:</strong>
-            <span class="status-badge" [ngClass]="{'approved': data.onaylandi, 'pending': !data.onaylandi}">
-              {{ data.onaylandi ? 'Onaylandı' : 'Onay Bekliyor' }}
-            </span>
-          </div>
+
+<div class="dialog-container">
+    <h2 mat-dialog-title>{{ data.baslik }}</h2>
+    <mat-dialog-content class="dialog-content">
+      <div class="news-details">
+        <div class="detail-item">
+          <strong>İçerik:</strong>
+          <p>{{ data.icerik }}</p>
         </div>
-      </mat-dialog-content>
-      <mat-dialog-actions align="end" class="dialog-actions">
-        <button mat-button mat-dialog-close color="warn">
-          ❌ İptal
-        </button>
-        <button mat-raised-button color="primary" (click)="onApprove()" *ngIf="!data.onaylandi">
-          ✅ Kabul Et
-        </button>
-      </mat-dialog-actions>
-    </div>
+        <div class="detail-item">
+          <strong>Yayın Tarihi:</strong>
+          <p>{{ data.yayinTarihi | date:'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+        <div class="detail-item">
+          <strong>Kategori ID:</strong>
+          <p>{{ data.kategoriId || 'Belirtilmemiş' }}</p>
+        </div>
+        <div class="detail-item" *ngIf="data.resimUrl">
+          <strong>Resim:</strong>
+          <img [src]="data.resimUrl" alt="Haber Resmi" class="news-image">
+        </div>
+        <div class="detail-item">
+          <strong>Durum:</strong>
+          <span class="status-badge" [ngClass]="{'approved': data.onaylandi, 'pending': !data.onaylandi}">
+            {{ data.onaylandi ? 'Onaylandı' : 'Onay Bekliyor' }}
+          </span>
+        </div>
+        <div class="detail-item">
+          <strong>Okunma Sayısı:</strong>
+          <p>{{ data.okunduSayisi }}</p>
+        </div>
+        <div class="detail-item">
+          <strong>Tıklanma Sayısı:</strong>
+          <p>{{ data.tiklandiSayisi }}</p>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end" class="dialog-actions">
+      <button mat-button mat-dialog-close color="warn">
+
+
+
   `,
   styles: [`
     .dialog-container {
@@ -123,10 +131,24 @@ import { MatIconModule } from '@angular/material/icon';
 export class NewsDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<NewsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: Haber,
+    private newsService: NewsService // NewsService'i enjekte edin
   ) {}
 
   onApprove(): void {
-    this.dialogRef.close('approve');
+   /* this.dialogRef.close('approve');*/
+   this.newsService.approveNews(this.data.id).subscribe({
+      next: (updatedHaber) => {
+        this.data = updatedHaber; // Güncellenmiş haberi al
+        this.dialogRef.close('approve'); // Pop-up'ı kapat ve 'approve' sonucunu döndür
+      },
+      error: (err) => {
+        console.error('Haber onaylanamadı:', err);
+      }
+    });
   }
-}
+  }
+
+
+  
+
