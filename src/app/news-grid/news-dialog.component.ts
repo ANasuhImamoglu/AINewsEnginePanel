@@ -39,12 +39,10 @@ import { MatIconModule } from '@angular/material/icon';
       </mat-dialog-content>
       <mat-dialog-actions align="end" class="dialog-actions">
         <button mat-button mat-dialog-close color="warn">
-          <mat-icon>close</mat-icon>
-          İptal
+          ❌ İptal
         </button>
         <button mat-raised-button color="primary" (click)="onApprove()" *ngIf="!data.onaylandi">
-          <mat-icon>check</mat-icon>
-          Kabul Et
+          ✅ Kabul Et
         </button>
       </mat-dialog-actions>
     </div>
