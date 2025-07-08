@@ -19,6 +19,7 @@ export interface Haber {
   resimUrl: string;
   yayinTarihi: string;
   onaylandi: boolean;
+  kategoriId?: number;
 }
 
 @Injectable({
