@@ -1,12 +1,55 @@
-<h2>Haberler Grid</h2>
-<div class="grid-container">
-  <div class="grid-item" *ngFor="let haber of haberler">
-    <h3>{{ haber?.baslik }}</h3>
-    <p>{{ haber?.icerik | slice:0:100 }}...</p>
-    <img *ngIf="haber?.resimUrl" [src]="haber.resimUrl" alt="Haber Resmi" class="news-image">
-    <p>Yayın: {{ haber?.yayinTarihi }}</p>
-    <p>Durum: {{ haber?.onaylandi ? 'Onaylandı' : 'Onay Bekliyor' }}</p>
-    <!-- <button (click)="ahmetButonTest(haber)">Onayla</button> -->
-     <button *ngIf="!haber.onaylandi" (click)="approveNews(haber.id)">Kabul Et</button>
-  </div>
+<div class="news-container">
+  <h2>Haber Yönetimi</h2>
+  
+  <mat-table [dataSource]="dataSource" class="mat-elevation-8">
+    <!-- Başlık Kolonu -->
+    <ng-container matColumnDef="baslik">
+      <th mat-header-cell *matHeaderCellDef>Başlık</th>
+      <td mat-cell *matCellDef="let haber">{{ haber.baslik }}</td>
+    </ng-container>
+
+    <!-- İçerik Kolonu -->
+    <ng-container matColumnDef="icerik">
+      <th mat-header-cell *matHeaderCellDef>İçerik</th>
+      <td mat-cell *matCellDef="let haber">{{ truncateText(haber.icerik, 50) }}</td>
+    </ng-container>
+
+    <!-- Yayın Tarihi Kolonu -->
+    <ng-container matColumnDef="yayinTarihi">
+      <th mat-header-cell *matHeaderCellDef>Yayın Tarihi</th>
+      <td mat-cell *matCellDef="let haber">{{ haber.yayinTarihi | date:'dd/MM/yyyy' }}</td>
+    </ng-container>
+
+    <!-- Kategori ID Kolonu -->
+    <ng-container matColumnDef="kategoriId">
+      <th mat-header-cell *matHeaderCellDef>Kategori ID</th>
+      <td mat-cell *matCellDef="let haber">{{ haber.kategoriId || 'N/A' }}</td>
+    </ng-container>
+
+    <!-- Aksiyonlar Kolonu -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Aksiyonlar</th>
+      <td mat-cell *matCellDef="let haber">
+        <button mat-raised-button color="primary" (click)="openNewsDialog(haber)">
+          <mat-icon></mat-icon>
+          Oku
+        </button>
+        <span class="status-badge" [ngClass]="{'approved': haber.onaylandi, 'pending': !haber.onaylandi}">
+          {{ haber.onaylandi ? 'Onaylandı' : 'Bekliyor' }}
+        </span>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </mat-table>
+
+  <!-- Paginator -->
+  <mat-paginator 
+    #paginator
+    [pageSizeOptions]="[5, 10, 20, 50]"
+    [pageSize]="10"
+    showFirstLastButtons
+    aria-label="Haberler için sayfa seçimi">
+  </mat-paginator>
 </div>
