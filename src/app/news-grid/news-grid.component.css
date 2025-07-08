@@ -28,13 +28,21 @@
   background-color: #f5f5f5;
 }
 
+/* Aksiyonlar kolonu için flexbox düzeni */
+.actions-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .status-badge {
-  margin-left: 10px;
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 12px;
   font-weight: 500;
   text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .status-badge.approved {
@@ -51,11 +59,22 @@
   margin-right: 8px;
 }
 
-.mat-icon {
-  margin-right: 4px;
-  font-size: 18px;
-  height: 18px;
-  width: 18px;
+/* Oku Butonu Özel Stili */
+.read-button {
+  background-color: #1976d2 !important;
+  color: white !important;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.read-button:hover {
+  background-color: #1565c0 !important;
+  box-shadow: 0 4px 8px rgba(25, 118, 210, 0.3);
+}
+
+.read-button:active {
+  background-color: #0d47a1 !important;
 }
 
 /* Paginator Stilleri */
