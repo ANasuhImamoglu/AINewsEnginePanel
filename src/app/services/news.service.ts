@@ -20,6 +20,8 @@ export interface Haber {
   yayinTarihi: string;
   onaylandi: boolean;
   kategoriId?: number;
+   okunduSayisi: number;
+    tiklandiSayisi: number;
 }
 
 @Injectable({
@@ -38,5 +40,27 @@ export class NewsService {
     return this.http.put<Haber>(`${this.apiUrl}/${id}/approve`, {});
   }
 
+//
 
+    fetchRssNews(rssUrl: string, kategoriId: number): Observable<any> {
+        return this.http.post(`${this.apiUrl}/fetch-rss`, { rssUrl, kategoriId });
+    }
+
+    getMostReadNews(): Observable<Haber[]> {
+        return this.http.get<Haber[]>(`${this.apiUrl}/most-read`);
+    }
+
+    getMostClickedNews(): Observable<Haber[]> {
+        return this.http.get<Haber[]>(`${this.apiUrl}/most-clicked`);
+    }
+
+    incrementReadCount(id: number): Observable<any> {
+        return this.http.put(`${this.apiUrl}/${id}/increment-read`, {});
+    }
+
+    incrementClickCount(id: number): Observable<any> {
+        return this.http.put(`${this.apiUrl}/${id}/increment-click`, {});
+    }
 }
+
+
