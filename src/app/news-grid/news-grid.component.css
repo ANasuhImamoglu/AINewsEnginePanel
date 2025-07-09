@@ -120,3 +120,158 @@
 .most-read-clicked-section button:hover {
     background-color: #1565c0;
 }
+
+/* Header ve Arama Bölümü */
+.header-section {
+  margin-bottom: 20px;
+}
+
+.header-section h2 {
+  margin-bottom: 16px;
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.search-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.search-field {
+  flex: 1;
+  max-width: 500px;
+}
+
+.search-field .mat-mdc-form-field-wrapper {
+  background-color: #f8fafc;
+  border-radius: 12px;
+}
+
+.search-field .mat-mdc-text-field-wrapper {
+  border-radius: 12px !important;
+}
+
+.search-field input {
+  font-size: 16px;
+  padding: 12px;
+}
+
+.clear-button {
+  background-color: #f1f5f9;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+
+.clear-button:hover {
+  background-color: #e2e8f0;
+  color: #475569;
+  transform: scale(1.05);
+}
+
+.results-info {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+  border-left: 4px solid #0ea5e9;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.results-count {
+  font-size: 14px;
+  color: #0c4a6e;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .search-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .search-field {
+    max-width: 100%;
+  }
+  
+  .clear-button {
+    align-self: flex-end;
+    margin-top: -8px;
+  }
+  
+  .header-section h2 {
+    font-size: 20px;
+  }
+  
+  .results-info {
+    margin-bottom: 12px;
+  }
+  
+  .results-count {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .news-container {
+    padding: 12px;
+  }
+  
+  .header-section h2 {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  
+  .search-field input {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+/* Gelişmiş arama stilleri */
+.search-field .mat-mdc-form-field-focus-overlay {
+  background-color: rgba(59, 130, 246, 0.04);
+}
+
+.search-field:hover .mat-mdc-form-field-wrapper {
+  background-color: #f1f5f9;
+}
+
+.search-field.mat-focused .mat-mdc-form-field-wrapper {
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Animasyonlar */
+.results-info {
+  animation: slideInDown 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.clear-button {
+  animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

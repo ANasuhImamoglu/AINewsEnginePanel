@@ -7,6 +7,10 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FormsModule } from '@angular/forms';
 import { NewsService, Haber } from '../services/news.service';
 import { NewsDialogComponent } from './news-dialog.component';
 import { Router } from '@angular/router';
@@ -22,7 +26,11 @@ import { Router } from '@angular/router';
     MatDialogModule, 
     MatIconModule, 
     MatSnackBarModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatTooltipModule,
+    FormsModule
   ],
   templateUrl: './news-grid.component.html',
   styleUrls: ['./news-grid.component.css']
@@ -32,6 +40,8 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
   
   dataSource = new MatTableDataSource<Haber>([]);
   displayedColumns: string[] = ['baslik', 'icerik', 'yayinTarihi', 'kategoriId', 'actions'];
+  searchTerm: string = '';
+  originalData: Haber[] = [];
 
   constructor(
     private newsService: NewsService,
@@ -53,13 +63,41 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
   loadNews(): void {
     this.newsService.getNews().subscribe({
       next: (data) => {
+        this.originalData = data;
         this.dataSource.data = data;
+        this.setupFilterPredicate();
       },
       error: (err) => {
         console.error('Haberler yüklenemedi:', err);
         this.snackBar.open('Haberler yüklenemedi', 'Kapat', { duration: 3000 });
       }
     });
+  }
+
+  setupFilterPredicate(): void {
+    this.dataSource.filterPredicate = (data: Haber, filter: string) => {
+      const searchText = filter.toLowerCase();
+      return data.baslik.toLowerCase().includes(searchText) ||
+             data.icerik.toLowerCase().includes(searchText) ||
+             (data.kategoriId ? data.kategoriId.toString().toLowerCase().includes(searchText) : false);
+    };
+  }
+
+  applyFilter(): void {
+    this.dataSource.filter = this.searchTerm.trim().toLowerCase();
+    
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.dataSource.filter = '';
+    
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   /* Removed duplicate openNewsDialog implementation */

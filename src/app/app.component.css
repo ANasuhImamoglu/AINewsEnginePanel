@@ -1,0 +1,62 @@
+.app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-toolbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.app-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-right: 20px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.user-info mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.active-link {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .app-title {
+    font-size: 16px;
+    margin-right: 8px;
+  }
+  
+  .user-info {
+    display: none;
+  }
+  
+  mat-toolbar button span {
+    display: none;
+  }
+}
