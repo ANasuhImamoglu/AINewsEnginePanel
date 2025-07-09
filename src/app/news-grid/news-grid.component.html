@@ -1,5 +1,37 @@
 <div class="news-container">
-  <h2>Haber Yönetimi</h2>
+  <div class="header-section">
+    <h2>Haber Yönetimi</h2>
+    
+    <!-- Arama Bölümü -->
+    <div class="search-section">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Haberlerde Ara...</mat-label>
+        <input 
+          matInput 
+          [(ngModel)]="searchTerm" 
+          (input)="applyFilter()"
+          placeholder="Başlık, içerik veya kategori ID ile ara"
+          #searchInput>
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      
+      <button 
+        mat-icon-button 
+        *ngIf="searchTerm" 
+        (click)="clearSearch()"
+        class="clear-button"
+        matTooltip="Aramayı temizle">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
+    
+    <!-- Sonuç sayısı -->
+    <div class="results-info" *ngIf="searchTerm">
+      <span class="results-count">
+        {{ dataSource.filteredData.length }} sonuç bulundu
+      </span>
+    </div>
+  </div>
   
   <mat-table [dataSource]="dataSource" class="mat-elevation-8">
     <!-- Başlık Kolonu -->

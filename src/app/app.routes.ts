@@ -1,10 +1,13 @@
 import { Routes } from '@angular/router';
 import { NewsGridComponent } from './news-grid/news-grid.component';
-import { MostReadClickedComponent } from './most-read-clicked/most-read-clicked.component'; // Yeni componenti import edin
+import { MostReadClickedComponent } from './most-read-clicked/most-read-clicked.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/news', pathMatch: 'full' },
-  { path: 'news', component: NewsGridComponent },
-  { path: 'most-read-clicked', component: MostReadClickedComponent }, // Yeni rota
-  { path: '**', redirectTo: '/news' }
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'news', component: NewsGridComponent, canActivate: [AuthGuard] },
+  { path: 'most-read-clicked', component: MostReadClickedComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: '/login' }
 ];
