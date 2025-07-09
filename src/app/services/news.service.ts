@@ -11,6 +11,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Haber {
   id: number;
@@ -28,7 +29,7 @@ export interface Haber {
   providedIn: 'root'
 })
 export class NewsService {
-  private apiUrl = 'https://localhost:7104/api/Haberler';
+  private apiUrl = `${environment.apiUrl}/Haberler`;
 
   constructor(private http: HttpClient) { }
 

@@ -6,6 +6,21 @@
     </mat-card-header>
 
     <mat-card-content>
+      <!-- Backend Durum Bilgisi -->
+      <div *ngIf="backendStatus" class="backend-status" 
+           [ngClass]="{
+             'status-success': backendStatus.includes('başarılı'), 
+             'status-warning': backendStatus.includes('çalışıyor') && !backendStatus.includes('başarılı'),
+             'status-error': backendStatus.includes('bağlanılamıyor') || backendStatus.includes('bulunamıyor') || backendStatus.includes('hata')
+           }">
+        <mat-icon>{{ 
+          backendStatus.includes('başarılı') ? 'check_circle' : 
+          backendStatus.includes('çalışıyor') ? 'warning' : 
+          'error' 
+        }}</mat-icon>
+        <span>{{ backendStatus }}</span>
+      </div>
+
       <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Kullanıcı Adı</mat-label>
@@ -48,16 +63,26 @@
           color="primary" 
           type="submit"
           class="login-button full-width"
-          [disabled]="!loginForm.form.valid">
-          Giriş Yap
+          [disabled]="!loginForm.form.valid || isLoading">
+          <span *ngIf="!isLoading">Giriş Yap</span>
+          <span *ngIf="isLoading">
+            <mat-spinner diameter="20" class="inline-spinner"></mat-spinner>
+            Giriş Yapılıyor...
+          </span>
         </button>
       </form>
 
-      <div class="demo-credentials">
-        <h4>Demo Hesaplar:</h4>
-        <p><strong>Admin:</strong> admin / admin123</p>
-        <p><strong>Kullanıcı:</strong> user / user123</p>
-      </div>
+        <!-- Kayıt Ol Linkı -->
+        <div class="register-link">
+          <p>Henüz hesabınız yok mu?</p>
+          <button 
+            mat-button 
+            color="primary" 
+            type="button"
+            routerLink="/register">
+            Kayıt Ol
+          </button>
+        </div>
     </mat-card-content>
   </mat-card>
 </div>

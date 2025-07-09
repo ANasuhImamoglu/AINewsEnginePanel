@@ -128,9 +128,21 @@
 }
 
 .login-button:disabled {
-  background: #e2e8f0;
-  color: #94a3b8;
-  cursor: not-allowed;
+  background: #e2e8f0 !important;
+  color: #94a3b8 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.inline-spinner {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.login-button:disabled .inline-spinner {
+  margin-right: 8px;
 }
 
 .demo-credentials {
@@ -175,6 +187,87 @@
 .demo-credentials strong {
   color: #1e293b;
   font-weight: 600;
+}
+
+.api-status {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: rgba(249, 115, 22, 0.1);
+  border-radius: 6px;
+  border-left: 3px solid #f97316;
+}
+
+.api-status small {
+  color: #ea580c;
+  font-size: 11px;
+  font-style: italic;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 20px;
+  padding: 16px;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(14, 165, 233, 0.2);
+}
+
+.register-link p {
+  margin: 0 0 8px 0;
+  color: #0369a1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.register-link button {
+  font-weight: 600;
+  text-transform: none;
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  color: white;
+  border-radius: 8px;
+  padding: 8px 24px;
+}
+
+.register-link button:hover {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+/* Backend durum bilgisi */
+.backend-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-success {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.status-warning {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #ff9800;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.status-error {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.backend-status mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 /* Responsive design */
