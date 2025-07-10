@@ -51,6 +51,7 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
+    this.setupFilterPredicate(); // Filtreyi önce kur
     this.loadNews();
   }
 
@@ -66,6 +67,10 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
         this.originalData = data;
         this.dataSource.data = data;
         this.setupFilterPredicate();
+        // YENİ: veri yüklenince mevcut arama terimini koru
+        if (this.searchTerm) {
+          this.applyFilter();
+        }
       },
       error: (err) => {
         console.error('Haberler yüklenemedi:', err);
@@ -76,19 +81,33 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
 
   setupFilterPredicate(): void {
     this.dataSource.filterPredicate = (data: Haber, filter: string) => {
-      const searchText = filter.toLowerCase();
-      return data.baslik.toLowerCase().includes(searchText) ||
-             data.icerik.toLowerCase().includes(searchText) ||
-             (data.kategoriId ? data.kategoriId.toString().toLowerCase().includes(searchText) : false);
+      const searchText = filter.toLowerCase().trim();
+      
+      // Arama terimi boşsa tüm verileri göster
+      if (!searchText) {
+        return true;
+      }
+      
+      // Null check'ler ekle
+      const baslik = data.baslik ? data.baslik.toLowerCase() : '';
+      const icerik = data.icerik ? data.icerik.toLowerCase() : '';
+      const kategori = data.kategoriId ? data.kategoriId.toString() : '';
+      
+      return baslik.includes(searchText) ||
+             icerik.includes(searchText) ||
+             kategori.includes(searchText);
     };
   }
 
   applyFilter(): void {
-    this.dataSource.filter = this.searchTerm.trim().toLowerCase();
+    // Filter string'i set et
+    this.dataSource.filter = this.searchTerm;
     
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+    
+    console.log('Filter applied:', this.searchTerm, 'Results:', this.dataSource.filteredData.length);
   }
 
   clearSearch(): void {
@@ -162,4 +181,4 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
 
 
 
-  
+
