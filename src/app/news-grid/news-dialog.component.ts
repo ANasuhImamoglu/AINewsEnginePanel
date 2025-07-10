@@ -51,9 +51,15 @@ import { Haber } from '../services/news.service'; // Haber modelini import edin
     </mat-dialog-content>
     <mat-dialog-actions align="end" class="dialog-actions">
       <button mat-button mat-dialog-close color="warn">
-
-
-
+        <mat-icon>close</mat-icon>
+        Kapat
+      </button>
+      <button mat-raised-button color="primary" (click)="onApprove()" *ngIf="!data.onaylandi">
+        <mat-icon>check</mat-icon>
+        Onayla
+      </button>
+    </mat-dialog-actions>
+  </div>
   `,
   styles: [`
     .dialog-container {
@@ -147,7 +153,7 @@ export class NewsDialogComponent {
       }
     });
   }
-  }
+}
 
 
   
