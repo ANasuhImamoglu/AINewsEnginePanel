@@ -25,10 +25,13 @@
       </button>
     </div>
     
-    <!-- Sonuç sayısı -->
-    <div class="results-info" *ngIf="searchTerm">
-      <span class="results-count">
-        {{ dataSource.filteredData.length }} sonuç bulundu
+    <!-- Sonuç sayısı ve sayfa bilgisi -->
+    <div class="results-info">
+      <span class="results-count" *ngIf="searchTerm">
+        "{{ searchTerm }}" için {{ dataSource.data.length }} sonuç bulundu
+      </span>
+      <span class="page-info">
+        Toplam {{ totalItems }} haber - Sayfa {{ currentPage }} / {{ totalPages }}
       </span>
     </div>
   </div>
@@ -77,14 +80,74 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </mat-table>
 
-  <!-- Paginator -->
-  <mat-paginator 
-    #paginator
-    [pageSizeOptions]="[5, 10, 20, 50]"
-    [pageSize]="10"
-    showFirstLastButtons
-    aria-label="Haberler için sayfa seçimi">
-  </mat-paginator>
+  <!-- Özel Sayfalama Kontrolleri -->
+  <div class="custom-pagination" *ngIf="totalPages > 1">
+    <div class="pagination-info">
+      <span>{{ (currentPage - 1) * pageSize + 1 }} - {{ Math.min(currentPage * pageSize, totalItems) }} / {{ totalItems }}</span>
+    </div>
+    
+    <div class="pagination-controls">
+      <!-- İlk sayfa -->
+      <button 
+        mat-icon-button 
+        [disabled]="!hasPreviousPage()"
+        (click)="onPageChange('first')"
+        matTooltip="İlk sayfa">
+        <mat-icon>first_page</mat-icon>
+      </button>
+      
+      <!-- Önceki sayfa -->
+      <button 
+        mat-icon-button 
+        [disabled]="!hasPreviousPage()"
+        (click)="onPageChange('prev')"
+        matTooltip="Önceki sayfa">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      
+      <!-- Sayfa numaraları -->
+      <div class="page-numbers">
+        <button 
+          *ngFor="let page of getPageNumbers()" 
+          mat-button
+          [class.current-page]="page === currentPage"
+          (click)="onPageChange(page)">
+          {{ page }}
+        </button>
+      </div>
+      
+      <!-- Sonraki sayfa -->
+      <button 
+        mat-icon-button 
+        [disabled]="!hasNextPage()"
+        (click)="onPageChange('next')"
+        matTooltip="Sonraki sayfa">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+      
+      <!-- Son sayfa -->
+      <button 
+        mat-icon-button 
+        [disabled]="!hasNextPage()"
+        (click)="onPageChange('last')"
+        matTooltip="Son sayfa">
+        <mat-icon>last_page</mat-icon>
+      </button>
+    </div>
+    
+    <!-- Sayfa boyutu seçici -->
+    <div class="page-size-selector">
+      <mat-form-field appearance="outline">
+        <mat-label>Sayfa boyutu</mat-label>
+        <mat-select [value]="pageSize" (selectionChange)="onPageSizeChange($event.value)">
+          <mat-option [value]="5">5</mat-option>
+          <mat-option [value]="10">10</mat-option>
+          <mat-option [value]="20">20</mat-option>
+          <mat-option [value]="50">50</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
 </div>
 
     <div class="most-read-clicked-section">

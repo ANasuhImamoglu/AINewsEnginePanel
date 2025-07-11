@@ -10,8 +10,9 @@ import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { NewsService, Haber } from '../services/news.service';
+import { NewsService, Haber, PagedResult, PaginationInfo } from '../services/news.service';
 import { NewsDialogComponent } from './news-dialog.component';
 import { Router } from '@angular/router';
 
@@ -30,6 +31,7 @@ import { Router } from '@angular/router';
     MatInputModule,
     MatFormFieldModule,
     MatTooltipModule,
+    MatSelectModule,
     FormsModule
   ],
   templateUrl: './news-grid.component.html',
@@ -42,35 +44,49 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<Haber>([]);
   displayedColumns: string[] = ['baslik', 'icerik', 'yayinTarihi', 'kategoriId', 'actions'];
   searchTerm: string = '';
-  originalData: Haber[] = [];
+  
+  // Sayfalama için yeni özellikler
+  totalItems: number = 0;
+  pageSize: number = 10;
+  currentPage: number = 1;
+  totalPages: number = 0;
+  
+  // Kategori filtreleme için
+  selectedKategoriId?: number;
+  
+  // Arama için orijinal data
+  allNewsData: Haber[] = [];
+  filteredData: Haber[] = [];
 
   constructor(
     private newsService: NewsService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private router: Router // Router'ı enjekte edin
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.setupFilterPredicate(); // Filtreyi önce kur
     this.loadNews();
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    // Sayfa başına 10 öğe göster
-    this.paginator.pageSize = 10;
+    // Backend'den sayfalama yapıldığı için Mat-Table paginator'ını devre dışı bırakıyoruz
+    this.dataSource.paginator = null;
   }
 
   loadNews(): void {
-    this.newsService.getNews().subscribe({
-      next: (data) => {
-        this.originalData = data;
-        this.dataSource.data = data;
-        this.setupFilterPredicate();
-        // YENİ: veri yüklenince mevcut arama terimini koru
-        if (this.searchTerm) {
-          this.applyFilter();
+    this.newsService.getNews(this.currentPage, this.pageSize, this.selectedKategoriId).subscribe({
+      next: (pagedResult: PagedResult<Haber>) => {
+        this.allNewsData = pagedResult.items;
+        this.dataSource.data = pagedResult.items;
+        this.totalItems = pagedResult.pagination.totalItems;
+        this.totalPages = pagedResult.pagination.totalPages;
+        this.currentPage = pagedResult.pagination.pageNumber;
+        this.pageSize = pagedResult.pagination.pageSize;
+        
+        // Eğer arama terimi varsa, filtreleme uygula
+        if (this.searchTerm.trim()) {
+          this.applyClientSideFilter();
         }
       },
       error: (err) => {
@@ -80,42 +96,87 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
     });
   }
 
-  setupFilterPredicate(): void {
-    this.dataSource.filterPredicate = (data: Haber, filter: string) => {
-      const searchText = filter.toLowerCase().trim();
-      
-      // Arama terimi boşsa tüm verileri göster
-      if (!searchText) {
-        return true;
+  // Sayfa değişikliği için yeni metodlar
+  onPageChange(direction: 'prev' | 'next' | 'first' | 'last' | number): void {
+    if (typeof direction === 'number') {
+      this.currentPage = direction;
+    } else {
+      switch (direction) {
+        case 'prev':
+          if (this.currentPage > 1) this.currentPage--;
+          break;
+        case 'next':
+          if (this.currentPage < this.totalPages) this.currentPage++;
+          break;
+        case 'first':
+          this.currentPage = 1;
+          break;
+        case 'last':
+          this.currentPage = this.totalPages;
+          break;
       }
+    }
+    
+    this.loadNews();
+  }
+
+  // Client-side filtreleme metodu (sadece mevcut sayfa içinde)
+  applyClientSideFilter(): void {
+    if (!this.searchTerm.trim()) {
+      this.dataSource.data = [...this.allNewsData];
+      return;
+    }
+
+    const searchText = this.searchTerm.toLowerCase().trim();
+    const filtered = this.allNewsData.filter(haber => {
+      const baslik = haber.baslik ? haber.baslik.toLowerCase() : '';
+      const icerik = haber.icerik ? haber.icerik.toLowerCase() : '';
       
-      // Null check'ler ekle - sadece başlık ve içerik
-      const baslik = data.baslik ? data.baslik.toLowerCase() : '';
-      const icerik = data.icerik ? data.icerik.toLowerCase() : '';
-      
-      return baslik.includes(searchText) ||
-             icerik.includes(searchText);
-    };
+      return baslik.includes(searchText) || icerik.includes(searchText);
+    });
+    
+    this.dataSource.data = filtered;
+  }
+
+  // Arama için yeni metod - sadece mevcut sayfada arama
+  performSearch(): void {
+    this.applyClientSideFilter();
   }
 
   applyFilter(): void {
-    // Filter string'i set et
-    this.dataSource.filter = this.searchTerm;
-    
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-    
-    console.log('Filter applied:', this.searchTerm, 'Results:', this.dataSource.filteredData.length);
+    this.applyClientSideFilter();
   }
 
   clearSearch(): void {
     this.searchTerm = '';
-    this.dataSource.filter = '';
+    this.dataSource.data = [...this.allNewsData];
+  }
+
+  // Kategori filtreleme
+  filterByCategory(kategoriId?: number): void {
+    this.selectedKategoriId = kategoriId;
+    this.currentPage = 1;
+    this.loadNews();
+  }
+
+  // Sayfa numaraları için yardımcı metodlar
+  getPageNumbers(): number[] {
+    const pages: number[] = [];
+    const start = Math.max(1, this.currentPage - 2);
+    const end = Math.min(this.totalPages, this.currentPage + 2);
     
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
     }
+    return pages;
+  }
+
+  hasPreviousPage(): boolean {
+    return this.currentPage > 1;
+  }
+
+  hasNextPage(): boolean {
+    return this.currentPage < this.totalPages;
   }
 
   /* Removed duplicate openNewsDialog implementation */
@@ -123,13 +184,13 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
   approveNews(id: number): void {
     this.newsService.approveNews(id).subscribe({
       next: (updatedHaber) => {
-        const currentData = this.dataSource.data;
-        const index = currentData.findIndex((h: Haber) => h.id === id);
-        if (index !== -1) {
-          currentData[index] = updatedHaber;
-          this.dataSource.data = [...currentData]; // Trigger change detection
-        }
         this.snackBar.open('Haber onaylandı', 'Kapat', { duration: 3000 });
+        // Mevcut sayfayı yenile
+        if (this.searchTerm.trim()) {
+          this.performSearch();
+        } else {
+          this.loadNews();
+        }
         console.log(`Haber ${id} onaylandı`);
       },
       error: (err) => {
@@ -169,13 +230,32 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
 
         dialogRef.afterClosed().subscribe(() => {
             clearTimeout(readTimer);
-            this.loadNews();
+            // Mevcut sayfadaki verileri yenile
+            if (this.searchTerm.trim()) {
+                this.performSearch();
+            } else {
+                this.loadNews();
+            }
         });
     }
 
     navigateToMostReadClicked(): void {
         this.router.navigate(['/most-read-clicked']);
     }
+
+    // Sayfa boyutu değişikliği
+  onPageSizeChange(newPageSize: number): void {
+    this.pageSize = newPageSize;
+    this.currentPage = 1; // İlk sayfaya git
+    if (this.searchTerm.trim()) {
+      this.performSearch();
+    } else {
+      this.loadNews();
+    }
+  }
+
+  // Math nesnesini template'da kullanabilmek için
+  Math = Math;
 }
 
 

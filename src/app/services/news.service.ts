@@ -21,8 +21,22 @@ export interface Haber {
   yayinTarihi: string;
   onaylandi: boolean;
   kategoriId?: number;
-   okunduSayisi: number;
-    tiklandiSayisi: number;
+  okunmaSayisi: number;
+  tiklanmaSayisi: number;
+}
+
+export interface PaginationInfo {
+  totalItems: number;
+  pageSize: number;
+  pageNumber: number;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+export interface PagedResult<T> {
+  items: T[];
+  pagination: PaginationInfo;
 }
 
 @Injectable({
@@ -33,16 +47,24 @@ export class NewsService {
 
   constructor(private http: HttpClient) { }
 
-  getNews(): Observable<Haber[]> {
-    return this.http.get<Haber[]>(this.apiUrl);
+  getNews(pageNumber: number = 1, pageSize: number = 10, kategoriId?: number): Observable<PagedResult<Haber>> {
+    let params = `?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    if (kategoriId && kategoriId !== 0) {
+      params += `&kategoriId=${kategoriId}`;
+    }
+    return this.http.get<PagedResult<Haber>>(`${this.apiUrl}${params}`);
   }
 
-  // Backend'de arama yapan metod
-  searchNews(searchTerm: string): Observable<Haber[]> {
-    if (!searchTerm || searchTerm.trim() === '') {
-      return this.getNews(); // Arama terimi boşsa tüm haberleri getir
-    }
-    return this.http.get<Haber[]>(`${this.apiUrl}/search?term=${encodeURIComponent(searchTerm.trim())}`);
+  // Geriye uyumluluk için eski metod (deprecated)
+  getAllNews(): Observable<Haber[]> {
+    return this.http.get<Haber[]>(`${this.apiUrl}/all`);
+  }
+
+  // Backend'de arama yapan metod - şimdilik client-side filtreleme kullanıyoruz
+  searchNews(searchTerm: string, pageNumber: number = 1, pageSize: number = 10): Observable<PagedResult<Haber>> {
+    // Şimdilik tüm haberleri getirip client-side filtreleme yapıyoruz
+    // Gerçek backend implementasyonu için backend'e search endpoint'i eklenmesi gerekiyor
+    return this.getNews(pageNumber, pageSize);
   }
 
   approveNews(id: number): Observable<Haber> {
@@ -64,11 +86,11 @@ export class NewsService {
     }
 
     incrementReadCount(id: number): Observable<any> {
-        return this.http.put(`${this.apiUrl}/${id}/increment-read`, {});
+        return this.http.post(`${this.apiUrl}/${id}/okundu`, {});
     }
 
     incrementClickCount(id: number): Observable<any> {
-        return this.http.put(`${this.apiUrl}/${id}/increment-click`, {});
+        return this.http.post(`${this.apiUrl}/${id}/tiklandi`, {});
     }
 }
 

@@ -10,8 +10,8 @@ export interface Haber {
   yayinTarihi: string;
   onaylandi: boolean;
     kategoriId?: number;
-  okunduSayisi: number;
-    tiklandiSayisi: number;
+  okunmaSayisi: number;
+    tiklanmaSayisi: number;
 }
 
 @Injectable({
