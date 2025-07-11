@@ -37,6 +37,14 @@ export class NewsService {
     return this.http.get<Haber[]>(this.apiUrl);
   }
 
+  // Backend'de arama yapan metod
+  searchNews(searchTerm: string): Observable<Haber[]> {
+    if (!searchTerm || searchTerm.trim() === '') {
+      return this.getNews(); // Arama terimi boşsa tüm haberleri getir
+    }
+    return this.http.get<Haber[]>(`${this.apiUrl}/search?term=${encodeURIComponent(searchTerm.trim())}`);
+  }
+
   approveNews(id: number): Observable<Haber> {
     return this.http.put<Haber>(`${this.apiUrl}/${id}/approve`, {});
   }

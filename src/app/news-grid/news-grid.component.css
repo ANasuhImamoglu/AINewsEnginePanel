@@ -99,6 +99,106 @@
   font-weight: 500;
 }
 
+/* Sayfa başına öğe sayısı seçimi özel stilleri */
+.mat-paginator .mat-paginator-page-size-select,
+.mat-paginator .mat-paginator-page-size-select .mat-mdc-select-trigger,
+.mat-paginator .mat-paginator-page-size-select .mat-mdc-select-value,
+.mat-paginator .mat-paginator-page-size-select .mdc-outlined-text-field,
+.mat-paginator .mat-paginator-page-size-select .mdc-outlined-text-field__outline,
+.mat-paginator .mat-paginator-page-size-select .mdc-outlined-text-field__outline-path {
+  background-color: #3f51b5 !important;
+  color: white !important;
+  border-radius: 6px !important;
+  padding: 6px 12px !important;
+  border: none !important;
+  outline: none !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Tüm çerçeve ve kontur elementlerini kaldır */
+.mat-paginator .mat-paginator-page-size-select,
+.mat-paginator .mat-paginator-page-size-select *,
+.mat-paginator .mat-paginator-page-size-select::before,
+.mat-paginator .mat-paginator-page-size-select::after {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Outline ve border öğelerini tamamen gizle */
+.mat-paginator .mat-paginator-page-size-select .mdc-outlined-text-field__outline,
+.mat-paginator .mat-paginator-page-size-select .mdc-outlined-text-field__outline-leading,
+.mat-paginator .mat-paginator-page-size-select .mdc-outlined-text-field__outline-trailing,
+.mat-paginator .mat-paginator-page-size-select .mdc-outlined-text-field__outline-notch {
+  display: none !important;
+  border: none !important;
+  opacity: 0 !important;
+}
+
+/* MDC select için özel kurallar */
+.mat-paginator .mat-mdc-select {
+  border: none !important;
+  outline: none !important;
+}
+
+.mat-paginator .mat-mdc-select .mdc-outlined-text-field {
+  border: none !important;
+  outline: none !important;
+}
+
+.mat-paginator .mat-mdc-select .mdc-outlined-text-field__outline {
+  display: none !important;
+}
+
+.mat-paginator .mat-paginator-page-size-select:hover {
+  background-color: #303f9f !important;
+  box-shadow: none !important;
+  transform: translateY(-1px) !important;
+  outline: none !important;
+  border: none !important;
+}
+
+.mat-paginator .mat-paginator-page-size-select:focus {
+  background-color: #303f9f !important;
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Dropdown panel stili */
+.mat-select-panel {
+  background-color: #3f51b5 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(63, 81, 181, 0.4) !important;
+}
+
+.mat-option {
+  color: white !important;
+  background-color: transparent !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.mat-option:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.mat-option.mat-selected {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.mat-option.mat-active {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Sayfa başına öğe sayısı label stili */
+.mat-paginator .mat-paginator-page-size-label {
+  color: #424242 !important;
+  font-weight: 500 !important;
+  margin-right: 12px !important;
+}
+
 .most-read-clicked-section {
     margin-top: 20px;
     display: flex;

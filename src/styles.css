@@ -27,3 +27,99 @@
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: 'liga';
 }
+
+/* Global MatPaginator Styles */
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select .mat-mdc-select-value {
+  background-color: #3f51b5 !important;
+  color: white !important;
+  border-radius: 6px !important;
+  padding: 8px 12px !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+  transition: all 0.3s ease !important;
+  border: none !important;
+  outline: none !important;
+}
+
+/* Tüm MDC select elementleri için border ve gölge kaldırma */
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select,
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select .mat-mdc-select,
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select .mat-mdc-select-trigger,
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select .mdc-outlined-text-field,
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select *,
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select::before,
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select::after {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Outline elementlerini tamamen gizle */
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select .mdc-outlined-text-field__outline,
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select .mdc-outlined-text-field__outline-leading,
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select .mdc-outlined-text-field__outline-trailing,
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select .mdc-outlined-text-field__outline-notch,
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select .mdc-outlined-text-field__outline-path {
+  display: none !important;
+  border: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select .mdc-outlined-text-field__outline {
+  display: none !important;
+}
+
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select .mat-mdc-select-arrow-wrapper {
+  color: white !important;
+}
+
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select:hover .mat-mdc-select-value {
+  background-color: #303f9f !important;
+  box-shadow: none !important;
+  transform: translateY(-1px) !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select:focus {
+  border: none !important;
+  outline: none !important;
+}
+
+.mat-mdc-paginator .mat-mdc-paginator-page-size-select:focus .mat-mdc-select-value {
+  border: none !important;
+  outline: none !important;
+}
+
+/* Select dropdown panel */
+.mat-mdc-select-panel {
+  background-color: #3f51b5 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(63, 81, 181, 0.4) !important;
+}
+
+.mat-mdc-option {
+  color: white !important;
+  background-color: transparent !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.mat-mdc-option:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.mat-mdc-option.mdc-list-item--selected {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.mat-mdc-option.mat-mdc-option-active {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Sayfa başına öğe sayısı label */
+.mat-mdc-paginator .mat-mdc-paginator-page-size-label {
+  color: #424242 !important;
+  font-weight: 500 !important;
+  margin-right: 12px !important;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
@@ -33,7 +33,8 @@ import { Router } from '@angular/router';
     FormsModule
   ],
   templateUrl: './news-grid.component.html',
-  styleUrls: ['./news-grid.component.css']
+  styleUrls: ['./news-grid.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class NewsGridComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -88,14 +89,12 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
         return true;
       }
       
-      // Null check'ler ekle
+      // Null check'ler ekle - sadece başlık ve içerik
       const baslik = data.baslik ? data.baslik.toLowerCase() : '';
       const icerik = data.icerik ? data.icerik.toLowerCase() : '';
-      const kategori = data.kategoriId ? data.kategoriId.toString() : '';
       
       return baslik.includes(searchText) ||
-             icerik.includes(searchText) ||
-             kategori.includes(searchText);
+             icerik.includes(searchText);
     };
   }
 
