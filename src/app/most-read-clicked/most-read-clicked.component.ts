@@ -13,7 +13,7 @@ import { Haber } from '../services/news.service';
   styleUrls: ['./most-read-clicked.component.css']
 })
 export class MostReadClickedComponent implements OnInit {
-  displayedColumns: string[] = ['baslik', 'icerik', 'yayinTarihi', 'okunduSayisi', 'tiklandiSayisi'];
+  displayedColumns: string[] = ['baslik', 'icerik', 'yayinTarihi', 'okunmaSayisi', 'tiklanmaSayisi'];
   mostReadNews = new MatTableDataSource<Haber>([]); // MatTableDataSource kullanıyoruz
   mostClickedNews = new MatTableDataSource<Haber>([]); // MatTableDataSource kullanıyoruz
 

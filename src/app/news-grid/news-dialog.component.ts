@@ -41,11 +41,11 @@ import { Haber } from '../services/news.service'; // Haber modelini import edin
         </div>
         <div class="detail-item">
           <strong>Okunma Sayısı:</strong>
-          <p>{{ data.okunduSayisi }}</p>
+          <p>{{ data.okunmaSayisi }}</p>
         </div>
         <div class="detail-item">
           <strong>Tıklanma Sayısı:</strong>
-          <p>{{ data.tiklandiSayisi }}</p>
+          <p>{{ data.tiklanmaSayisi }}</p>
         </div>
       </div>
     </mat-dialog-content>
