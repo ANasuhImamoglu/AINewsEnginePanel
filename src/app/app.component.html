@@ -6,7 +6,7 @@
       
       <span class="spacer"></span>
       
-      <button mat-button routerLink="/news" routerLinkActive="active-link">
+      <button mat-button (click)="navigateToPath('/news')" routerLinkActive="active-link">
         <mat-icon>article</mat-icon>
         Haberler
       </button>
@@ -15,7 +15,14 @@
         <mat-icon>trending_up</mat-icon>
         En Çok Okunanlar
       </button>
-      
+     
+            
+      <button mat-button (click)="navigateToPath('/about-us')" routerLinkActive="active-link">
+        <mat-icon>info</mat-icon>
+        Hakkımızda
+      </button>   
+
+
       <span class="spacer"></span>
       
       <span class="user-info">
