@@ -56,7 +56,9 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
   
   // Arama için orijinal data
   allNewsData: Haber[] = [];
-  filteredData: Haber[] = [];
+  
+  // Arama durumu takibi
+  isSearching: boolean = false;
 
   constructor(
     private newsService: NewsService,
@@ -83,11 +85,7 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
         this.totalPages = pagedResult.pagination.totalPages;
         this.currentPage = pagedResult.pagination.pageNumber;
         this.pageSize = pagedResult.pagination.pageSize;
-        
-        // Eğer arama terimi varsa, filtreleme uygula
-        if (this.searchTerm.trim()) {
-          this.applyClientSideFilter();
-        }
+        this.isSearching = false; // Arama durumunu sıfırla
       },
       error: (err) => {
         console.error('Haberler yüklenemedi:', err);
@@ -117,10 +115,43 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
       }
     }
     
-    this.loadNews();
+    // Arama aktifse arama ile sayfa değiştir, değilse normal yükle
+    if (this.isSearching) {
+      this.performServerSideSearch();
+    } else {
+      this.loadNews();
+    }
   }
 
-  // Client-side filtreleme metodu (sadece mevcut sayfa içinde)
+  // Server-side arama metodu - Backend'e istek gönderir
+  performServerSideSearch(): void {
+    if (!this.searchTerm.trim()) {
+      // Arama terimi boşsa normal yükleme yap
+      this.isSearching = false;
+      this.loadNews();
+      return;
+    }
+
+    this.isSearching = true;
+    this.newsService.searchNews(this.searchTerm, this.currentPage, this.pageSize).subscribe({
+      next: (pagedResult: PagedResult<Haber>) => {
+        this.allNewsData = pagedResult.items;
+        this.dataSource.data = pagedResult.items;
+        this.totalItems = pagedResult.pagination.totalItems;
+        this.totalPages = pagedResult.pagination.totalPages;
+        this.currentPage = pagedResult.pagination.pageNumber;
+        this.pageSize = pagedResult.pagination.pageSize;
+      },
+      error: (err) => {
+        console.error('Arama sonuçları yüklenemedi:', err);
+        this.snackBar.open('Arama sonuçları yüklenemedi', 'Kapat', { duration: 3000 });
+        // Hata durumunda client-side arama'ya geri dön
+        this.applyClientSideFilter();
+      }
+    });
+  }
+
+  // Basit client-side arama (fallback olarak)
   applyClientSideFilter(): void {
     if (!this.searchTerm.trim()) {
       this.dataSource.data = [...this.allNewsData];
@@ -138,18 +169,17 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
     this.dataSource.data = filtered;
   }
 
-  // Arama için yeni metod - sadece mevcut sayfada arama
-  performSearch(): void {
-    this.applyClientSideFilter();
-  }
-
   applyFilter(): void {
-    this.applyClientSideFilter();
+    // İlk sayfaya git ve server-side arama yap
+    this.currentPage = 1;
+    this.performServerSideSearch();
   }
 
   clearSearch(): void {
     this.searchTerm = '';
-    this.dataSource.data = [...this.allNewsData];
+    this.isSearching = false;
+    this.currentPage = 1;
+    this.loadNews(); // Normal veri yükleme
   }
 
   // Kategori filtreleme
@@ -186,8 +216,8 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
       next: (updatedHaber) => {
         this.snackBar.open('Haber onaylandı', 'Kapat', { duration: 3000 });
         // Mevcut sayfayı yenile
-        if (this.searchTerm.trim()) {
-          this.performSearch();
+        if (this.isSearching) {
+          this.performServerSideSearch();
         } else {
           this.loadNews();
         }
@@ -231,8 +261,8 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
         dialogRef.afterClosed().subscribe(() => {
             clearTimeout(readTimer);
             // Mevcut sayfadaki verileri yenile
-            if (this.searchTerm.trim()) {
-                this.performSearch();
+            if (this.isSearching) {
+                this.performServerSideSearch();
             } else {
                 this.loadNews();
             }
@@ -247,11 +277,7 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
   onPageSizeChange(newPageSize: number): void {
     this.pageSize = newPageSize;
     this.currentPage = 1; // İlk sayfaya git
-    if (this.searchTerm.trim()) {
-      this.performSearch();
-    } else {
-      this.loadNews();
-    }
+    this.loadNews();
   }
 
   // Math nesnesini template'da kullanabilmek için
