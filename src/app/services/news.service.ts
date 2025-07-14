@@ -11,6 +11,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 export interface Haber {
@@ -48,11 +49,29 @@ export class NewsService {
   constructor(private http: HttpClient) { }
 
   getNews(pageNumber: number = 1, pageSize: number = 10, kategoriId?: number): Observable<PagedResult<Haber>> {
-    let params = `?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    // Backend'te "page" parametresi beklendiği için "page" kullan
+    let params = `?page=${pageNumber}&pageSize=${pageSize}`;
     if (kategoriId && kategoriId !== 0) {
       params += `&kategoriId=${kategoriId}`;
     }
-    return this.http.get<PagedResult<Haber>>(`${this.apiUrl}${params}`);
+    
+    return this.http.get<any>(`${this.apiUrl}${params}`).pipe(
+      map((response: any) => {
+        // Backend'ten gelen format: { data: [...], totalCount: number }
+        // Frontend'in beklediği format: PagedResult<Haber>
+        const totalPages = Math.ceil(response.totalCount / pageSize);
+        
+        return {
+          items: response.data,
+          pagination: {
+            pageNumber: pageNumber,
+            pageSize: pageSize,
+            totalItems: response.totalCount,
+            totalPages: totalPages
+          }
+        } as PagedResult<Haber>;
+      })
+    );
   }
 
   // Geriye uyumluluk için eski metod (deprecated)
@@ -60,11 +79,32 @@ export class NewsService {
     return this.http.get<Haber[]>(`${this.apiUrl}/all`);
   }
 
-  // Backend'de arama yapan metod - şimdilik client-side filtreleme kullanıyoruz
+  // Backend'e arama isteği gönderen metod
   searchNews(searchTerm: string, pageNumber: number = 1, pageSize: number = 10): Observable<PagedResult<Haber>> {
-    // Şimdilik tüm haberleri getirip client-side filtreleme yapıyoruz
-    // Gerçek backend implementasyonu için backend'e search endpoint'i eklenmesi gerekiyor
-    return this.getNews(pageNumber, pageSize);
+    if (!searchTerm || searchTerm.trim() === '') {
+      return this.getNews(pageNumber, pageSize); // Arama terimi boşsa tüm haberleri getir
+    }
+    
+    // Backend'e search isteği gönder - Backend'te "page" parametresi beklendiği için "page" kullan
+    let params = `?term=${encodeURIComponent(searchTerm.trim())}&page=${pageNumber}&pageSize=${pageSize}`;
+    
+    return this.http.get<any>(`${this.apiUrl}/search${params}`).pipe(
+      map((response: any) => {
+        // Backend'ten gelen format: { data: [...], totalCount: number }
+        // Frontend'in beklediği format: PagedResult<Haber>
+        const totalPages = Math.ceil(response.totalCount / pageSize);
+        
+        return {
+          items: response.data,
+          pagination: {
+            pageNumber: pageNumber,
+            pageSize: pageSize,
+            totalItems: response.totalCount,
+            totalPages: totalPages
+          }
+        } as PagedResult<Haber>;
+      })
+    );
   }
 
   approveNews(id: number): Observable<Haber> {
