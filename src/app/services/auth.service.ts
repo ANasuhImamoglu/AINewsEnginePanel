@@ -40,18 +40,24 @@ export interface RegisterResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = `${environment.apiUrl}/Auth`;
+  private apiUrl = `${environment.apiUrl}/api/Auth`;
   private currentUser: User | null = null;
 
   constructor(private http: HttpClient) {
+    // localStorage'dan token ve user bilgilerini yükle
     const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
+    const savedToken = localStorage.getItem('token');
+    
+    if (savedUser && savedToken) {
       try {
         this.currentUser = JSON.parse(savedUser);
-      } catch (e) {
-        console.error('Error parsing saved user:', e);
-        this.currentUser = null;
+        console.log('Saved user loaded:', this.currentUser);
+      } catch (error) {
+        console.error('Error parsing saved user:', error);
+        this.clearLocalStorage();
       }
+    } else {
+      console.log('No saved user or token found');
     }
   }
 
@@ -214,7 +220,7 @@ export class AuthService {
   // Backend bağlantısını test et
   testConnection(): Observable<boolean> {
     // Basit bir GET isteği gönder
-    return this.http.get<any>(`${environment.apiUrl}/Haberler`).pipe(
+    return this.http.get<any>(`${environment.apiUrl}/api/Haberler`).pipe(
       map(() => true), // Başarılı response
       catchError((error) => {
         // 401, 403 gibi auth hataları backend'in çalıştığını gösterir
@@ -225,5 +231,50 @@ export class AuthService {
         return of(false);
       })
     );
+  }
+
+  // Mevcut kullanıcının username'ini döndür
+  getCurrentUsername(): string {
+    if (this.currentUser && this.currentUser.username) {
+      return this.currentUser.username;
+    }
+    
+    // Token'dan username'i çıkarmaya çalış
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.unique_name || payload.sub || 'Kullanıcı';
+      } catch (error) {
+        console.error('Token parse error:', error);
+      }
+    }
+    
+    return 'Kullanıcı';
+  }
+
+  // Mevcut kullanıcının ID'sini döndür
+  getCurrentUserId(): number {
+    if (this.currentUser && this.currentUser.id) {
+      return this.currentUser.id;
+    }
+    
+    // Token'dan user ID'yi çıkarmaya çalış
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return parseInt(payload.nameid || payload.user_id || '1');
+      } catch (error) {
+        console.error('Token parse error:', error);
+      }
+    }
+    
+    return 1; // Default user ID
+  }
+
+  // Mevcut kullanıcı bilgilerini döndür
+  getCurrentUser(): User | null {
+    return this.currentUser;
   }
 }

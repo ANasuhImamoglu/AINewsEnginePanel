@@ -1,0 +1,289 @@
+.comments-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.comments-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.comments-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #333;
+  margin: 0;
+}
+
+.add-comment-card {
+  margin-bottom: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.login-warning {
+  margin-bottom: 20px;
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.warning-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #856404;
+}
+
+.warning-content mat-icon {
+  color: #ffc107;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.comment-card {
+  border-left: 4px solid #2196f3;
+}
+
+.comment-avatar {
+  background-color: #2196f3;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.comment-content {
+  margin: 16px 0;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.reaction-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reaction-buttons button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.reaction-buttons button.active-like {
+  background-color: #e8f5e8;
+  color: #4caf50;
+}
+
+.reaction-buttons button.active-dislike {
+  background-color: #ffebee;
+  color: #f44336;
+}
+
+.reaction-count {
+  font-size: 12px;
+  min-width: 16px;
+  text-align: center;
+}
+
+.reply-form {
+  margin-top: 16px;
+}
+
+.reply-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.replies-list {
+  margin-top: 16px;
+  padding-left: 20px;
+  border-left: 2px solid #e0e0e0;
+}
+
+.reply-item {
+  margin-bottom: 16px;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.reply-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.reply-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #666;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reply-avatar mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.reply-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.reply-author {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.reply-date {
+  font-size: 12px;
+  color: #666;
+}
+
+.reply-content {
+  margin: 8px 0;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.reply-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.small-button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.small-button mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.small-button .reaction-count {
+  font-size: 10px;
+}
+
+.no-comments, .loading-indicator {
+  margin-top: 40px;
+}
+
+.no-comments-content, .loading-content {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.no-comments-content mat-icon, .loading-content mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  color: #ccc;
+}
+
+.loading-content mat-icon {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.no-comments-content h3 {
+  margin: 16px 0 8px 0;
+  font-weight: 500;
+}
+
+.no-comments-content p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .comments-container {
+    padding: 10px;
+  }
+  
+  .comment-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .reaction-buttons {
+    justify-content: flex-start;
+  }
+  
+  .replies-list {
+    padding-left: 10px;
+  }
+  
+  .reply-actions {
+    justify-content: flex-start;
+  }
+}
+
+/* Material Design Overrides */
+.mat-mdc-card {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 8px;
+}
+
+.mat-mdc-card-header {
+  padding-bottom: 8px;
+}
+
+.mat-mdc-form-field-outline {
+  border-radius: 8px;
+}
+
+.mat-mdc-button:not(:disabled) {
+  transition: all 0.3s ease;
+}
+
+.mat-mdc-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.mat-mdc-icon-button:hover:not(:disabled) {
+  background-color: rgba(0,0,0,0.04);
+}
