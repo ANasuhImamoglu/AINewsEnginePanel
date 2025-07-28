@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MostReadClickedComponent } from './most-read-clicked.component';
+import { MostClickedNewsComponent } from './most-clicked-news.component';
 
-describe('MostReadClickedComponent', () => {
-  let component: MostReadClickedComponent;
-  let fixture: ComponentFixture<MostReadClickedComponent>;
+describe('MostClickedNewsComponent', () => {
+  let component: MostClickedNewsComponent;
+  let fixture: ComponentFixture<MostClickedNewsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MostReadClickedComponent]
+      imports: [MostClickedNewsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MostReadClickedComponent);
+    fixture = TestBed.createComponent(MostClickedNewsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -6,15 +6,31 @@
       
       <span class="spacer"></span>
       
-      <button mat-button routerLink="/news" routerLinkActive="active-link">
+      <button mat-button (click)="showHaberler()" routerLink="/news" routerLinkActive="active-link">
         <mat-icon>article</mat-icon>
         Haberler
       </button>
-      
-      <button mat-button routerLink="/most-read-clicked" routerLinkActive="active-link">
+
+
+      <button mat-button (click)="showMostReadNews()" routerLinkActive="active-link">
+  <mat-icon>trending_up</mat-icon>
+  En Çok Okunanlar 
+</button>
+
+
+      <button mat-button (click)="showMostClickedNews()" routerLinkActive="active-link">
+  <mat-icon>trending_up</mat-icon>
+  En Çok Tıklananlar
+</button>
+  
+
+
+
+<!--       
+      <button mat-button routerLink="burası ne işe yarıyor ?" routerLinkActive="active-link">
         <mat-icon>trending_up</mat-icon>
-        En Çok Okunanlar
-      </button>
+        En Çok Okunanlar 
+      </button> -->
       
       <span class="spacer"></span>
       

@@ -54,7 +54,7 @@ export class NewsService {
     if (kategoriId && kategoriId !== 0) {
       params += `&kategoriId=${kategoriId}`;
     }
-    
+    console.log(`xxxxxx:${this.apiUrl}${params}`)
     return this.http.get<any>(`${this.apiUrl}${params}`).pipe(
       map((response: any) => {
         // Backend'ten gelen format: { data: [...], totalCount: number }
@@ -123,6 +123,10 @@ export class NewsService {
 
     getMostClickedNews(): Observable<Haber[]> {
         return this.http.get<Haber[]>(`${this.apiUrl}/most-clicked`);
+    }
+
+    getTop5ReadNews(): Observable<Haber[]> {
+      return this.http.get<Haber[]>(`${this.apiUrl}/GetTop5ReadNews`);
     }
 
     incrementReadCount(id: number): Observable<any> {
