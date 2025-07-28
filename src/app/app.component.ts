@@ -130,6 +130,10 @@ showHaberler() {
     });
   }
 
+  navigateToPath(path: string): void {
+    this.router.navigate([path]);
+  }
+
   get currentUsername(): string {
     return this.authService.currentUserValue?.username || '';
   }

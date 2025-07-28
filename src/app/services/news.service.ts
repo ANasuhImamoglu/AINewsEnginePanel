@@ -44,7 +44,7 @@ export interface PagedResult<T> {
   providedIn: 'root'
 })
 export class NewsService {
-  private apiUrl = `${environment.apiUrl}/Haberler`;
+  private apiUrl = `${environment.apiUrl}/api/Haberler`;
 
   constructor(private http: HttpClient) { }
 
