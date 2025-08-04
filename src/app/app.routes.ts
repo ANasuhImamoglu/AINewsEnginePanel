@@ -39,7 +39,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'news', component: WebsiteNewsComponent },
-      { path: 'news/:id', component: NewsDetailComponent },
+      { path: 'news/:id/:slug', component: NewsDetailComponent },
       { path: 'about', component: WebsiteAboutComponent }
     ]
   },

@@ -78,8 +78,9 @@ export class NewsDetailComponent implements OnInit {
     this.router.navigate(['/website/news']);
   }
 
-  navigateToNews(id: number): void {
-    this.router.navigate(['/website/news', id]);
+  navigateToNews(news: Haber): void {
+    const slug = NewsService.createSlug(news.baslik);
+    this.router.navigate(['/website/news', news.id, slug]);
   }
 
   formatDate(dateString: string): string {

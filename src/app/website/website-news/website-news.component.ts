@@ -98,8 +98,9 @@ export class WebsiteNewsComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  navigateToNews(id: number): void {
-    this.router.navigate(['/website/news', id]);
+  navigateToNews(news: Haber): void {
+    const slug = NewsService.createSlug(news.baslik);
+    this.router.navigate(['/website/news', news.id, slug]);
   }
 
   getPaginationPages(): number[] {
