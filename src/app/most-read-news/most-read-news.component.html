@@ -1,0 +1,80 @@
+
+<div class="most-read-container">
+  <h2 class="table-title">En Çok Okunan Haberler</h2>
+
+  <div *ngIf="isLoading" class="loading-indicator">
+    <mat-spinner diameter="40" color="primary"></mat-spinner>
+    <p class="loading-text">Yükleniyor...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <mat-icon class="error-icon">error</mat-icon>
+    <p class="error-text">{{ error }}</p>
+  </div>
+
+  <div *ngIf="!isLoading && !error && mostReadNews.length > 0" class="table-wrapper">
+    <table mat-table [dataSource]="mostReadNews" class="news-table">
+      <!-- Başlık Sütunu -->
+      <ng-container matColumnDef="baslik">
+        <th mat-header-cell *matHeaderCellDef>Başlık</th>
+        <td mat-cell *matCellDef="let news">
+          <!-- <a [routerLink]="['/news-detail', news.id]" class="news-link">{{ news.baslik }}</a> -->
+           <button mat-raised-button color="primary" class="read-button" (click)="test(news)">
+            {{ news.baslik }}
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Kategori Sütunu -->
+      <ng-container matColumnDef="kategori">
+        <th mat-header-cell *matHeaderCellDef>Kategori</th>
+        <td mat-cell *matCellDef="let news">
+          {{ getCategoryName(news.kategoriId ?? 0) }}
+        </td>
+      </ng-container>
+
+      <!-- Yayın Tarihi Sütunu -->
+      <ng-container matColumnDef="yayinTarihi">
+        <th mat-header-cell *matHeaderCellDef>Yayın Tarihi</th>
+        <td mat-cell *matCellDef="let news">
+          {{ news.yayinTarihi | date:'dd.MM.yyyy HH:mm' }}
+        </td>
+      </ng-container>
+
+      <!-- Okunma Sayısı Sütunu -->
+      <ng-container matColumnDef="okunmaSayisi">
+        <th mat-header-cell *matHeaderCellDef>Okunma</th>
+        <td mat-cell *matCellDef="let news">
+          <mat-icon class="icon-small">visibility</mat-icon>
+          {{ news.okunmaSayisi || 0 }}
+        </td>
+      </ng-container>
+
+      <!-- Tıklanma Sayısı Sütunu -->
+      <ng-container matColumnDef="tiklanmaSayisi">
+        <th mat-header-cell *matHeaderCellDef>Tıklanma</th>
+        <td mat-cell *matCellDef="let news">
+          <mat-icon class="icon-small">mouse</mat-icon>
+          {{ news.tiklanmaSayisi || 0 }}
+        </td>
+      </ng-container>
+
+      <!-- Tablo Başlığı -->
+      <tr mat-header-row *matHeaderRowDef="['baslik', 'kategori', 'yayinTarihi', 'okunmaSayisi', 'tiklanmaSayisi']"></tr>
+      <!-- Tablo Satırları -->
+      <tr mat-row *matRowDef="let row; columns: ['baslik', 'kategori', 'yayinTarihi', 'okunmaSayisi', 'tiklanmaSayisi']"></tr>
+    </table>
+    <div class="back-button-wrapper">
+      <button mat-raised-button color="primary" [routerLink]="['/news']">
+        <mat-icon>arrow_back</mat-icon>
+        Geri Dön
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && !error && mostReadNews.length === 0" class="no-data">
+    <mat-icon class="no-data-icon">info</mat-icon>
+    <p>En çok okunan haber bulunamadı.</p>
+  </div>
+</div>
+

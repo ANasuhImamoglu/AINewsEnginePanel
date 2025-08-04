@@ -11,11 +11,19 @@
         <mat-icon>article</mat-icon>
         Haberler
       </button>
-      
-      <button mat-button routerLink="/most-read-clicked" routerLinkActive="active-link">
-        <mat-icon>trending_up</mat-icon>
-        En Çok Okunanlar
-      </button>
+
+
+      <button mat-button (click)="showMostReadNews()" routerLinkActive="active-link">
+  <mat-icon>trending_up</mat-icon>
+  En Çok Okunanlar 
+</button>
+
+
+      <button mat-button (click)="showMostClickedNews()" routerLinkActive="active-link">
+  <mat-icon>trending_up</mat-icon>
+  En Çok Tıklananlar
+</button>
+  
       
       <button mat-button (click)="navigateToPath('/about-us')" routerLinkActive="active-link">
         <mat-icon>info</mat-icon>

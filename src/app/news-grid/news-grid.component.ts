@@ -76,6 +76,8 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = null;
   }
 
+  
+
   loadNews(): void {
     this.newsService.getNews(this.currentPage, this.pageSize, this.selectedKategoriId).subscribe({
       next: (pagedResult: PagedResult<Haber>) => {
@@ -86,6 +88,7 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
         this.currentPage = pagedResult.pagination.pageNumber;
         this.pageSize = pagedResult.pagination.pageSize;
         this.isSearching = false; // Arama durumunu sıfırla
+        
       },
       error: (err) => {
         console.error('Haberler yüklenemedi:', err);
@@ -267,10 +270,6 @@ export class NewsGridComponent implements OnInit, AfterViewInit {
                 this.loadNews();
             }
         });
-    }
-
-    navigateToMostReadClicked(): void {
-        this.router.navigate(['/most-read-clicked']);
     }
 
     // Sayfa boyutu değişikliği

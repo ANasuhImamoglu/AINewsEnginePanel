@@ -1,0 +1,141 @@
+.most-read-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.table-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: center;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+}
+
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 0;
+  background-color: #f8fafc;
+  border-radius: 8px;
+}
+
+.loading-text {
+  margin-top: 12px;
+  font-size: 1rem;
+  color: #64748b;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fef2f2;
+  padding: 16px;
+  border: 1px solid #f87171;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.error-icon {
+  color: #dc2626;
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.error-text {
+  color: #dc2626;
+  font-size: 1rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+.news-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.news-table th {
+  background-color: #3b82f6;
+  color: #fff;
+  font-weight: 500;
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+}
+
+.news-table th:first-child {
+  border-top-left-radius: 8px;
+}
+
+.news-table th:last-child {
+  border-top-right-radius: 8px;
+}
+
+.news-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.news-table tr:last-child td {
+  border-bottom: none;
+}
+
+.news-table tr:hover {
+  background-color: #f0f9ff;
+  transition: background-color 0.2s ease;
+}
+
+.news-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.news-link:hover {
+  color: #1e40af;
+  text-decoration: underline;
+}
+
+.icon-small {
+  font-size: 16px;
+  vertical-align: middle;
+  margin-right: 6px;
+  color: #6b7280;
+}
+
+.no-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 0;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  color: #64748b;
+}
+/* Mevcut stiller korunuyor, sadece yeni stil ekleniyor */
+.back-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px;
+}
+.no-data-icon {
+  font-size: 36px;
+  margin-bottom: 12px;
+  color: #94a3b8;
+}
