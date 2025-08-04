@@ -12,10 +12,43 @@ import { MaterialModule } from '../../material.module';
 export class WebsiteAboutComponent {
   teamMembers = [
     {
-      name: 'Ahmet Nasuh İmamoğlu',
-      position: 'Kurucu & Geliştirici',
+      name: 'İsmail Emirhan Yazıcı',
+      position: 'Frontend Geliştirici',
       image: 'assets/team/team1.jpg',
+      bio: 'Angular ve modern web teknolojileri konusunda uzman.',
+      social: {
+        linkedin: '#',
+        twitter: '#',
+        github: '#'
+      }
+    },
+    {
+      name: 'Eren Özgül',
+      position: 'Backend Geliştirici',
+      image: 'assets/team/team2.jpg',
+      bio: '.NET Core ve veritabanı yönetimi alanında deneyimli.',
+      social: {
+        linkedin: '#',
+        twitter: '#',
+        github: '#'
+      }
+    },
+    {
+      name: 'Ahmet Nasuh İmamoğlu',
+      position: 'Kurucu & Proje Yöneticisi',
+      image: 'assets/team/team3.jpg',
       bio: 'AI ve haber teknolojileri alanında uzman, projenin kurucusu.',
+      social: {
+        linkedin: '#',
+        twitter: '#',
+        github: '#'
+      }
+    },
+    {
+      name: 'Taha Yiğit Göksu',
+      position: 'UI/UX Tasarımcı',
+      image: 'assets/team/team4.jpg',
+      bio: 'Kullanıcı deneyimi ve arayüz tasarımı konusunda yaratıcı çözümler sunar.',
       social: {
         linkedin: '#',
         twitter: '#',

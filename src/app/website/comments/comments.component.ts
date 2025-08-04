@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material.module';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   templateUrl: './comments.component.html',
   styleUrls: ['./comments.component.css']
 })
-export class CommentsComponent implements OnInit {
+export class CommentsComponent implements OnInit, OnChanges {
   @Input() haberId!: number;
   
   comments: Comment[] = [];
@@ -30,20 +30,35 @@ export class CommentsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('CommentsComponent initialized with haberId:', this.haberId);
     if (this.haberId) {
       this.loadComments();
+    } else {
+      console.warn('No haberId provided to CommentsComponent');
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['haberId'] && !changes['haberId'].firstChange) {
+      console.log('haberId changed from', changes['haberId'].previousValue, 'to', changes['haberId'].currentValue);
+      if (this.haberId) {
+        this.loadComments();
+      }
     }
   }
 
   loadComments(): void {
+    console.log('Loading comments for haberId:', this.haberId);
     this.loading = true;
     this.commentsService.getCommentsByNewsId(this.haberId).subscribe({
       next: (comments: Comment[]) => {
+        console.log('Received comments for haberId', this.haberId, ':', comments);
         this.comments = comments.filter(comment => comment.onayDurumu);
+        console.log('Filtered approved comments:', this.comments);
         this.loading = false;
       },
       error: (error: any) => {
-        console.error('Comments loading error:', error);
+        console.error('Comments loading error for haberId', this.haberId, ':', error);
         this.loading = false;
       }
     });
