@@ -1,0 +1,122 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">AI Haber Merkezi</h1>
+      <p class="hero-subtitle">En güncel haberler ve analizler burada</p>
+      <button mat-raised-button color="primary" routerLink="/website/news" class="hero-button">
+        Haberleri Keşfet
+      </button>
+    </div>
+    <div class="hero-background"></div>
+  </section>
+
+  <!-- Featured News Section -->
+  <section class="featured-section" *ngIf="featuredNews.length > 0">
+    <div class="section-container">
+      <h2 class="section-title">Öne Çıkan Haberler</h2>
+      <div class="featured-grid">
+        <mat-card class="featured-card main-featured" *ngIf="featuredNews[0]" (click)="navigateToNews(featuredNews[0].id)">
+          <div class="card-image" [style.background-image]="'url(' + featuredNews[0].resimUrl + ')'">
+            <div class="card-overlay">
+              <span class="date">{{ formatDate(featuredNews[0].yayinTarihi) }}</span>
+            </div>
+          </div>
+          <mat-card-content>
+            <h3 class="card-title">{{ featuredNews[0].baslik }}</h3>
+            <p class="card-content">{{ truncateText(featuredNews[0].icerik, 200) }}</p>
+            <div class="card-stats">
+              <span><mat-icon>visibility</mat-icon>{{ featuredNews[0].okunmaSayisi }} okunma</span>
+              <span><mat-icon>mouse</mat-icon>{{ featuredNews[0].tiklanmaSayisi }} tıklama</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <div class="featured-side">
+          <mat-card class="featured-card side-featured" *ngFor="let news of featuredNews.slice(1)" (click)="navigateToNews(news.id)">
+            <div class="side-card-content">
+              <div class="side-image" [style.background-image]="'url(' + news.resimUrl + ')'"></div>
+              <div class="side-text">
+                <span class="date">{{ formatDate(news.yayinTarihi) }}</span>
+                <h4 class="side-title">{{ news.baslik }}</h4>
+                <p class="side-content">{{ truncateText(news.icerik, 100) }}</p>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest News Section -->
+  <section class="latest-section">
+    <div class="section-container">
+      <h2 class="section-title">Son Haberler</h2>
+      <div class="latest-grid" *ngIf="!loading">
+        <mat-card class="news-card" *ngFor="let news of latestNews" (click)="navigateToNews(news.id)">
+          <div class="card-image" [style.background-image]="'url(' + news.resimUrl + ')'">
+            <div class="card-overlay">
+              <span class="date">{{ formatDate(news.yayinTarihi) }}</span>
+            </div>
+          </div>
+          <mat-card-content>
+            <h3 class="card-title">{{ news.baslik }}</h3>
+            <p class="card-content">{{ truncateText(news.icerik) }}</p>
+            <div class="card-stats">
+              <span><mat-icon>visibility</mat-icon>{{ news.okunmaSayisi }}</span>
+              <span><mat-icon>mouse</mat-icon>{{ news.tiklanmaSayisi }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      
+      <!-- Loading State -->
+      <div class="loading-section" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+        <p>Haberler yükleniyor...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Most Read Section -->
+  <section class="most-read-section" *ngIf="mostReadNews.length > 0">
+    <div class="section-container">
+      <h2 class="section-title">En Çok Okunanlar</h2>
+      <div class="most-read-list">
+        <mat-card class="most-read-item" *ngFor="let news of mostReadNews; let i = index" (click)="navigateToNews(news.id)">
+          <div class="rank-number">{{ i + 1 }}</div>
+          <div class="most-read-image" [style.background-image]="'url(' + news.resimUrl + ')'"></div>
+          <div class="most-read-content">
+            <h4 class="most-read-title">{{ news.baslik }}</h4>
+            <p class="most-read-excerpt">{{ truncateText(news.icerik, 80) }}</p>
+            <div class="most-read-stats">
+              <span><mat-icon>visibility</mat-icon>{{ news.okunmaSayisi }} okunma</span>
+              <span class="date">{{ formatDate(news.yayinTarihi) }}</span>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="newsletter-section">
+    <div class="section-container">
+      <mat-card class="newsletter-card">
+        <mat-card-content>
+          <div class="newsletter-content">
+            <h3>Güncel Kalın</h3>
+            <p>En son haberleri e-posta ile alın</p>
+            <div class="newsletter-form">
+              <mat-form-field appearance="outline">
+                <mat-label>E-posta adresiniz</mat-label>
+                <input matInput type="email" placeholder="ornek@email.com">
+              </mat-form-field>
+              <button mat-raised-button color="primary">Abone Ol</button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+</div>
