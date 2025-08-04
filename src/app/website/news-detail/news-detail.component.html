@@ -71,7 +71,7 @@
   <section class="related-news" *ngIf="relatedNews.length > 0">
     <h2>İlgili Haberler</h2>
     <div class="related-grid">
-      <mat-card class="related-card" *ngFor="let relatedItem of relatedNews" (click)="navigateToNews(relatedItem.id)">
+      <mat-card class="related-card" *ngFor="let relatedItem of relatedNews" (click)="navigateToNews(relatedItem)">
         <div class="related-image" [style.background-image]="'url(' + relatedItem.resimUrl + ')'"></div>
         <mat-card-content>
           <h3>{{ relatedItem.baslik }}</h3>

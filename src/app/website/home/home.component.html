@@ -16,7 +16,7 @@
     <div class="section-container">
       <h2 class="section-title">Öne Çıkan Haberler</h2>
       <div class="featured-grid">
-        <mat-card class="featured-card main-featured" *ngIf="featuredNews[0]" (click)="navigateToNews(featuredNews[0].id)">
+        <mat-card class="featured-card main-featured" *ngIf="featuredNews[0]" (click)="navigateToNews(featuredNews[0])">
           <div class="card-image" [style.background-image]="'url(' + featuredNews[0].resimUrl + ')'">
             <div class="card-overlay">
               <span class="date">{{ formatDate(featuredNews[0].yayinTarihi) }}</span>
@@ -33,7 +33,7 @@
         </mat-card>
 
         <div class="featured-side">
-          <mat-card class="featured-card side-featured" *ngFor="let news of featuredNews.slice(1)" (click)="navigateToNews(news.id)">
+          <mat-card class="featured-card side-featured" *ngFor="let news of featuredNews.slice(1)" (click)="navigateToNews(news)">
             <div class="side-card-content">
               <div class="side-image" [style.background-image]="'url(' + news.resimUrl + ')'"></div>
               <div class="side-text">
@@ -53,7 +53,7 @@
     <div class="section-container">
       <h2 class="section-title">Son Haberler</h2>
       <div class="latest-grid" *ngIf="!loading">
-        <mat-card class="news-card" *ngFor="let news of latestNews" (click)="navigateToNews(news.id)">
+        <mat-card class="news-card" *ngFor="let news of latestNews" (click)="navigateToNews(news)">
           <div class="card-image" [style.background-image]="'url(' + news.resimUrl + ')'">
             <div class="card-overlay">
               <span class="date">{{ formatDate(news.yayinTarihi) }}</span>
@@ -83,7 +83,7 @@
     <div class="section-container">
       <h2 class="section-title">En Çok Okunanlar</h2>
       <div class="most-read-list">
-        <mat-card class="most-read-item" *ngFor="let news of mostReadNews; let i = index" (click)="navigateToNews(news.id)">
+        <mat-card class="most-read-item" *ngFor="let news of mostReadNews; let i = index" (click)="navigateToNews(news)">
           <div class="rank-number">{{ i + 1 }}</div>
           <div class="most-read-image" [style.background-image]="'url(' + news.resimUrl + ')'"></div>
           <div class="most-read-content">

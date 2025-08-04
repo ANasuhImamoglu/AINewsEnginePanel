@@ -136,6 +136,22 @@ export class NewsService {
     incrementClickCount(id: number): Observable<any> {
         return this.http.post(`${this.apiUrl}/${id}/tiklandi`, {});
     }
+
+    // Haber başlığını URL-friendly slug'a çevir
+    static createSlug(title: string): string {
+        return title
+            .toLowerCase()
+            .replace(/ğ/g, 'g')
+            .replace(/ü/g, 'u')
+            .replace(/ş/g, 's')
+            .replace(/ı/g, 'i')
+            .replace(/ö/g, 'o')
+            .replace(/ç/g, 'c')
+            .replace(/[^a-z0-9\s-]/g, '') // Özel karakterleri kaldır
+            .trim()
+            .replace(/\s+/g, '-') // Boşlukları tire ile değiştir
+            .replace(/-+/g, '-'); // Çoklu tireleri tek tire yap
+    }
 }
 
 
