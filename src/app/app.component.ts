@@ -84,13 +84,12 @@ showHaberler() {
   }
   showMostReadNews() {
     console.log("En çok okunan haberler gösteriliyor");
-    // BURAYA BU SATIRI EKLEYİN:
-    this.router.navigate(['/mostRead']); 
+    this.router.navigate(['/most-read']); 
   }
 
  showMostClickedNews() {
     console.log("En çok tıklanan haberler gösteriliyor");
-    this.router.navigate(['/mostClicked']);
+    this.router.navigate(['/most-clicked']);
  }
 
   title = 'AI News Engine Panel';

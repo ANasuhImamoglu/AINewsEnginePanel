@@ -25,6 +25,8 @@ import { HomeComponent } from './website/home/home.component';
 import { WebsiteNewsComponent } from './website/website-news/website-news.component';
 import { WebsiteAboutComponent } from './website/website-about/website-about.component';
 import { NewsDetailComponent } from './website/news-detail/news-detail.component';
+import { MostReadNewsComponent } from './most-read-news/most-read-news.component';
+import { MostClickedNewsComponent } from './most-clicked-news/most-clicked-news.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/website/home', pathMatch: 'full' },
@@ -46,6 +48,8 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'news', component: NewsGridComponent, canActivate: [AuthGuard] },
+  { path: 'most-read', component: MostReadNewsComponent, canActivate: [AuthGuard] },
+  { path: 'most-clicked', component: MostClickedNewsComponent, canActivate: [AuthGuard] },
   { path: 'about-us', component: AboutUsComponent },
   
   { path: '**', redirectTo: '/website/home' }

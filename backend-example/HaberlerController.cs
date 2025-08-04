@@ -40,6 +40,30 @@ public class HaberlerController : ControllerBase
         });
     }
 
+    // GET: api/Haberler/most-read
+    [HttpGet("most-read")]
+    public async Task<ActionResult<List<Haber>>> GetMostReadNews()
+    {
+        var mostReadNews = await _context.Haberler
+            .OrderByDescending(h => h.OkunmaSayisi)
+            .Take(20) // Top 20 en çok okunan
+            .ToListAsync();
+
+        return Ok(mostReadNews);
+    }
+
+    // GET: api/Haberler/most-clicked  
+    [HttpGet("most-clicked")]
+    public async Task<ActionResult<List<Haber>>> GetMostClickedNews()
+    {
+        var mostClickedNews = await _context.Haberler
+            .OrderByDescending(h => h.TiklanmaSayisi)
+            .Take(20) // Top 20 en çok tıklanan
+            .ToListAsync();
+
+        return Ok(mostClickedNews);
+    }
+
     // GET: api/Haberler/search?term=kelime&page=1&pageSize=10
     [HttpGet("search")]
     public async Task<ActionResult<object>> SearchHaberler(
