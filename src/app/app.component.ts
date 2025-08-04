@@ -56,4 +56,8 @@ export class AppComponent implements OnInit {
   get currentUsername(): string {
     return this.authService.currentUserValue?.username || '';
   }
+
+  isWebsiteRoute(): boolean {
+    return this.router.url.startsWith('/website');
+  }
 }

@@ -1,0 +1,139 @@
+<div class="website-layout">
+  <!-- Header -->
+  <header class="website-header">
+    <nav class="navbar">
+      <div class="nav-container">
+        <!-- Logo -->
+        <div class="nav-brand">
+          <a routerLink="/website/home" class="brand-link">
+            <mat-icon class="brand-icon">article</mat-icon>
+            <span class="brand-text">AI Haber</span>
+          </a>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <ul class="nav-menu desktop-menu">
+          <li class="nav-item" *ngFor="let item of navigationItems">
+            <a [routerLink]="item.path" 
+               routerLinkActive="active" 
+               class="nav-link">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <span>{{ item.label }}</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Mobile Menu Button -->
+        <button mat-icon-button class="mobile-menu-btn" (click)="toggleMobileMenu()">
+          <mat-icon>menu</mat-icon>
+        </button>
+
+        <!-- Login Button -->
+        <div class="nav-actions">
+          <a routerLink="/login" mat-raised-button color="primary" class="login-btn">
+            <mat-icon>login</mat-icon>
+            Giriş Yap
+          </a>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation -->
+      <div class="mobile-menu" [class.active]="mobileMenuOpen">
+        <ul class="mobile-nav-list">
+          <li *ngFor="let item of navigationItems">
+            <a [routerLink]="item.path" 
+               routerLinkActive="active" 
+               class="mobile-nav-link"
+               (click)="closeMobileMenu()">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <span>{{ item.label }}</span>
+            </a>
+          </li>
+          <li class="mobile-login">
+            <a routerLink="/login" 
+               mat-raised-button 
+               color="primary" 
+               class="mobile-login-btn"
+               (click)="closeMobileMenu()">
+              <mat-icon>login</mat-icon>
+              Giriş Yap
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="website-main">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+  <footer class="website-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>AI Haber Merkezi</h3>
+        <p>En güncel haberler ve analizleri takip edin. Teknoloji, spor, ekonomi ve daha fazlası...</p>
+        <div class="social-links">
+          <a *ngFor="let social of socialLinks" 
+             [href]="social.url" 
+             [title]="social.label" 
+             class="social-link">
+            <mat-icon>{{ social.icon }}</mat-icon>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h4>Hızlı Linkler</h4>
+        <ul class="footer-links">
+          <li><a routerLink="/website/home">Ana Sayfa</a></li>
+          <li><a routerLink="/website/news">Haberler</a></li>
+          <li><a routerLink="/website/about">Hakkımızda</a></li>
+          <li><a routerLink="/login">Giriş Yap</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Kategoriler</h4>
+        <ul class="footer-links">
+          <li><a href="#">Teknoloji</a></li>
+          <li><a href="#">Spor</a></li>
+          <li><a href="#">Ekonomi</a></li>
+          <li><a href="#">Sağlık</a></li>
+          <li><a href="#">Eğitim</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>İletişim</h4>
+        <div class="contact-info">
+          <div class="contact-item">
+            <mat-icon>email</mat-icon>
+            <span>info&#64;aihaber.com</span>
+          </div>
+          <div class="contact-item">
+            <mat-icon>phone</mat-icon>
+            <span>+90 (555) 123-4567</span>
+          </div>
+          <div class="contact-item">
+            <mat-icon>location_on</mat-icon>
+            <span>İstanbul, Türkiye</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-content">
+        <p>&copy; {{ currentYear }} AI Haber Merkezi. Tüm hakları saklıdır.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Gizlilik Politikası</a>
+          <a href="#">Kullanım Şartları</a>
+          <a href="#">Çerez Politikası</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

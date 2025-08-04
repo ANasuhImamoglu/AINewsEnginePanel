@@ -1,0 +1,215 @@
+<div class="about-container">
+  <!-- Hero Section -->
+  <section class="about-hero">
+    <div class="hero-content">
+      <h1>Hakkımızda</h1>
+      <p>AI Haber Merkezi, teknoloji ve yapay zeka destekli haber platformudur</p>
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="mission-section">
+    <div class="section-container">
+      <div class="mission-content">
+        <div class="mission-text">
+          <h2>Misyonumuz</h2>
+          <p>
+            AI Haber Merkezi olarak misyonumuz, en güncel ve güvenilir haberleri 
+            kullanıcılarımıza en hızlı şekilde ulaştırmaktır. Yapay zeka teknolojilerini 
+            kullanarak haber deneyimini kişiselleştiriyor ve kullanıcılarımızın ilgi 
+            alanlarına göre en alakalı içerikleri sunuyoruz.
+          </p>
+          <p>
+            Objektif habercilik ilkelerine bağlı kalarak, toplumu bilgilendirmeyi 
+            ve doğru haber kaynaklarına erişimi kolaylaştırmayı hedefliyoruz.
+          </p>
+        </div>
+        <div class="mission-image">
+          <mat-icon class="large-icon">newspaper</mat-icon>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="section-container">
+      <h2 class="section-title">Özelliklerimiz</h2>
+      <div class="features-grid">
+        <mat-card class="feature-card" *ngFor="let feature of features">
+          <mat-icon class="feature-icon">{{ feature.icon }}</mat-icon>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </mat-card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="section-container">
+      <h2 class="section-title">Rakamlarla Biz</h2>
+      <div class="stats-grid">
+        <div class="stat-item" *ngFor="let stat of stats">
+          <div class="stat-value">{{ stat.value }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="team-section">
+    <div class="section-container">
+      <h2 class="section-title">Ekibimiz</h2>
+      <div class="team-grid">
+        <mat-card class="team-card" *ngFor="let member of teamMembers">
+          <div class="member-image">
+            <div class="member-avatar">
+              <mat-icon>person</mat-icon>
+            </div>
+          </div>
+          <mat-card-content>
+            <h3>{{ member.name }}</h3>
+            <h4>{{ member.position }}</h4>
+            <p>{{ member.bio }}</p>
+            <div class="member-social">
+              <a [href]="member.social.linkedin" class="social-link">
+                <mat-icon>work</mat-icon>
+              </a>
+              <a [href]="member.social.twitter" class="social-link">
+                <mat-icon>alternate_email</mat-icon>
+              </a>
+              <a [href]="member.social.github" class="social-link">
+                <mat-icon>code</mat-icon>
+              </a>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Section -->
+  <section class="technology-section">
+    <div class="section-container">
+      <h2 class="section-title">Teknolojilerimiz</h2>
+      <div class="tech-content">
+        <div class="tech-text">
+          <h3>Modern Teknoloji Yığını</h3>
+          <p>
+            Projemizde en güncel ve güvenilir teknolojileri kullanarak, 
+            kullanıcılarımıza en iyi deneyimi sunmaya odaklanıyoruz.
+          </p>
+          <ul class="tech-list">
+            <li><strong>Frontend:</strong> Angular 19, TypeScript, Material Design</li>
+            <li><strong>Backend:</strong> .NET Core, C#, Entity Framework</li>
+            <li><strong>Database:</strong> SQL Server</li>
+            <li><strong>AI/ML:</strong> Yapay zeka destekli haber analizi</li>
+            <li><strong>Security:</strong> JWT Authentication, HTTPS</li>
+            <li><strong>Hosting:</strong> Cloud-based infrastructure</li>
+          </ul>
+        </div>
+        <div class="tech-icons">
+          <div class="tech-icon-grid">
+            <div class="tech-icon" title="Angular">
+              <mat-icon>web</mat-icon>
+              <span>Angular</span>
+            </div>
+            <div class="tech-icon" title=".NET Core">
+              <mat-icon>settings</mat-icon>
+              <span>.NET</span>
+            </div>
+            <div class="tech-icon" title="TypeScript">
+              <mat-icon>code</mat-icon>
+              <span>TypeScript</span>
+            </div>
+            <div class="tech-icon" title="SQL Server">
+              <mat-icon>storage</mat-icon>
+              <span>SQL Server</span>
+            </div>
+            <div class="tech-icon" title="AI/ML">
+              <mat-icon>psychology</mat-icon>
+              <span>AI/ML</span>
+            </div>
+            <div class="tech-icon" title="Cloud">
+              <mat-icon>cloud</mat-icon>
+              <span>Cloud</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section">
+    <div class="section-container">
+      <mat-card class="contact-card">
+        <mat-card-content>
+          <div class="contact-content">
+            <div class="contact-info">
+              <h3>İletişime Geçin</h3>
+              <p>Sorularınız, önerileriniz veya iş birliği teklifleriniz için bize ulaşın.</p>
+              
+              <div class="contact-methods">
+                <div class="contact-method">
+                  <mat-icon>email</mat-icon>
+                  <div>
+                    <strong>E-posta</strong>
+                    <p>info&#64;aihaber.com</p>
+                  </div>
+                </div>
+                
+                <div class="contact-method">
+                  <mat-icon>phone</mat-icon>
+                  <div>
+                    <strong>Telefon</strong>
+                    <p>+90 (555) 123-4567</p>
+                  </div>
+                </div>
+                
+                <div class="contact-method">
+                  <mat-icon>location_on</mat-icon>
+                  <div>
+                    <strong>Adres</strong>
+                    <p>İstanbul, Türkiye</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="contact-form">
+              <h4>Hızlı İletişim</h4>
+              <div class="form-group">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Adınız</mat-label>
+                  <input matInput>
+                </mat-form-field>
+              </div>
+              
+              <div class="form-group">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>E-posta</mat-label>
+                  <input matInput type="email">
+                </mat-form-field>
+              </div>
+              
+              <div class="form-group">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Mesajınız</mat-label>
+                  <textarea matInput rows="4"></textarea>
+                </mat-form-field>
+              </div>
+              
+              <button mat-raised-button color="primary" class="send-button">
+                <mat-icon>send</mat-icon>
+                Gönder
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+</div>

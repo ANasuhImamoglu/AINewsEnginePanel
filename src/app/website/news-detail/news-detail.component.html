@@ -1,0 +1,109 @@
+<div class="news-detail-container" *ngIf="!loading && !error && news">
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    <a routerLink="/website/home">Ana Sayfa</a>
+    <span class="separator">/</span>
+    <a routerLink="/website/news">Haberler</a>
+    <span class="separator">/</span>
+    <span class="current">{{ news.baslik }}</span>
+  </nav>
+
+  <!-- News Header -->
+  <header class="news-header">
+    <div class="news-category">
+      <span class="category-badge">{{ getCategoryName(news.kategoriId) }}</span>
+    </div>
+    <h1 class="news-title">{{ news.baslik }}</h1>
+    
+    <div class="news-meta">
+      <div class="meta-left">
+        <span class="publish-date">
+          <mat-icon>schedule</mat-icon>
+          {{ formatDate(news.yayinTarihi) }}
+        </span>
+        <span class="read-count">
+          <mat-icon>visibility</mat-icon>
+          {{ news.okunmaSayisi }} okunma
+        </span>
+        <span class="click-count">
+          <mat-icon>mouse</mat-icon>
+          {{ news.tiklanmaSayisi }} tıklama
+        </span>
+      </div>
+      
+      <div class="meta-right">
+        <button mat-icon-button (click)="shareNews()" title="Paylaş">
+          <mat-icon>share</mat-icon>
+        </button>
+        <button mat-icon-button (click)="goBack()" title="Geri Dön">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- News Image -->
+  <div class="news-image-container" *ngIf="news.resimUrl">
+    <img [src]="news.resimUrl" [alt]="news.baslik" class="news-image">
+  </div>
+
+  <!-- News Content -->
+  <article class="news-content">
+    <div class="content-text">
+      {{ news.icerik }}
+    </div>
+  </article>
+
+  <!-- News Actions -->
+  <div class="news-actions">
+    <button mat-raised-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Haberlere Dön
+    </button>
+    
+    <button mat-stroked-button (click)="shareNews()">
+      <mat-icon>share</mat-icon>
+      Paylaş
+    </button>
+  </div>
+
+  <!-- Related News -->
+  <section class="related-news" *ngIf="relatedNews.length > 0">
+    <h2>İlgili Haberler</h2>
+    <div class="related-grid">
+      <mat-card class="related-card" *ngFor="let relatedItem of relatedNews" (click)="navigateToNews(relatedItem.id)">
+        <div class="related-image" [style.background-image]="'url(' + relatedItem.resimUrl + ')'"></div>
+        <mat-card-content>
+          <h3>{{ relatedItem.baslik }}</h3>
+          <p>{{ relatedItem.icerik.substring(0, 100) + '...' }}</p>
+          <div class="related-meta">
+            <span>{{ formatDate(relatedItem.yayinTarihi) }}</span>
+            <span>{{ relatedItem.okunmaSayisi }} okunma</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- Comments Section -->
+  <section class="comments-section" *ngIf="news">
+    <app-comments [haberId]="news.id"></app-comments>
+  </section>
+</div>
+
+<!-- Loading State -->
+<div class="loading-container" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+  <p>Haber yükleniyor...</p>
+</div>
+
+<!-- Error State -->
+<div class="error-container" *ngIf="error">
+  <mat-icon class="error-icon">error</mat-icon>
+  <h2>Haber Bulunamadı</h2>
+  <p>Aradığınız haber bulunamadı veya kaldırılmış olabilir.</p>
+  <button mat-raised-button color="primary" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+    Haberlere Dön
+  </button>
+</div>

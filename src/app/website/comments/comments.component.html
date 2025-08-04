@@ -1,0 +1,150 @@
+<div class="comments-section">
+  <div class="comments-header">
+    <h3>Yorumlar ({{ comments.length }})</h3>
+  </div>
+
+  <!-- Yorum yazma formu -->
+  <div class="comment-form" *ngIf="authService.isLoggedIn(); else loginPrompt">
+    <div class="form-header">
+      <h4>Yorum Yaz</h4>
+    </div>
+    <form (ngSubmit)="submitComment()" #commentForm="ngForm">
+      <div class="form-group">
+        <textarea 
+          [(ngModel)]="newComment"
+          name="comment"
+          class="form-control"
+          placeholder="Yorumunuzu yazın..."
+          rows="4"
+          required
+          [disabled]="submitting">
+        </textarea>
+      </div>
+      <div class="form-actions">
+        <button 
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="submitting || !newComment.trim()">
+          <span *ngIf="submitting" class="spinner"></span>
+          {{ submitting ? 'Gönderiliyor...' : 'Yorum Gönder' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Giriş yapma teşviki -->
+  <ng-template #loginPrompt>
+    <div class="login-prompt">
+      <p>Yorum yapmak için <a (click)="goToLogin()" class="login-link">giriş yapın</a></p>
+    </div>
+  </ng-template>
+
+  <!-- Loading durumu -->
+  <div class="loading" *ngIf="loading">
+    <div class="spinner-large"></div>
+    <p>Yorumlar yükleniyor...</p>
+  </div>
+
+  <!-- Yorumlar listesi -->
+  <div class="comments-list" *ngIf="!loading">
+    <div class="no-comments" *ngIf="comments.length === 0">
+      <p>Henüz yorum yapılmamış. İlk yorumu siz yapın!</p>
+    </div>
+
+    <div class="comment-item" *ngFor="let comment of comments">
+      <div class="comment-content">
+        <div class="comment-header">
+          <span class="username">{{ comment.kullaniciAdi }}</span>
+          <span class="date">{{ formatDate(comment.tarih) }}</span>
+        </div>
+        <div class="comment-text">
+          {{ comment.yorum }}
+        </div>
+        <div class="comment-actions">
+          <button 
+            class="action-btn like-btn"
+            [class.active]="getLikeButtonClass(comment)"
+            (click)="likeComment(comment.id)">
+            <i class="fas fa-thumbs-up"></i>
+            <span>{{ comment.likes || 0 }}</span>
+          </button>
+          <button 
+            class="action-btn dislike-btn"
+            [class.active]="getDislikeButtonClass(comment)"
+            (click)="dislikeComment(comment.id)">
+            <i class="fas fa-thumbs-down"></i>
+            <span>{{ comment.dislikes || 0 }}</span>
+          </button>
+          <button 
+            class="action-btn reply-btn"
+            (click)="toggleReply(comment.id)"
+            *ngIf="authService.isLoggedIn()">
+            <i class="fas fa-reply"></i>
+            Yanıtla
+          </button>
+        </div>
+
+        <!-- Yanıt formu -->
+        <div class="reply-form" *ngIf="showReplyForm[comment.id]">
+          <form (ngSubmit)="submitReply(comment.id)">
+            <div class="form-group">
+              <textarea 
+                [(ngModel)]="replyText[comment.id]"
+                name="reply"
+                class="form-control"
+                placeholder="Yanıtınızı yazın..."
+                rows="3"
+                required>
+              </textarea>
+            </div>
+            <div class="form-actions">
+              <button 
+                type="submit"
+                class="btn btn-sm btn-primary"
+                [disabled]="!replyText[comment.id]?.trim()">
+                Yanıt Gönder
+              </button>
+              <button 
+                type="button"
+                class="btn btn-sm btn-secondary"
+                (click)="toggleReply(comment.id)">
+                İptal
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Yanıtlar -->
+        <div class="replies" *ngIf="comment.replies && comment.replies.length > 0">
+          <div class="reply-item" *ngFor="let reply of comment.replies">
+            <div class="reply-content">
+              <div class="reply-header">
+                <span class="username">{{ reply.kullaniciAdi }}</span>
+                <span class="date">{{ formatDate(reply.tarih) }}</span>
+              </div>
+              <div class="reply-text">
+                {{ reply.yorum }}
+              </div>
+              <div class="reply-actions">
+                <button 
+                  class="action-btn like-btn"
+                  [class.active]="reply.userReaction === 'like'"
+                  (click)="likeComment(reply.id)">
+                  <i class="fas fa-thumbs-up"></i>
+                  <span>{{ reply.likes || 0 }}</span>
+                </button>
+                <button 
+                  class="action-btn dislike-btn"
+                  [class.active]="reply.userReaction === 'dislike'"
+                  (click)="dislikeComment(reply.id)">
+                  <i class="fas fa-thumbs-down"></i>
+                  <span>{{ reply.dislikes || 0 }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

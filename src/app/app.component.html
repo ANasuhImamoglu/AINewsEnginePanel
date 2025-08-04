@@ -1,6 +1,7 @@
 
 <div class="app-container">
-  <mat-toolbar color="primary" *ngIf="authService.isLoggedIn()">
+  <!-- Admin Panel Toolbar - Sadece admin sayfalarında göster -->
+  <mat-toolbar color="primary" *ngIf="authService.isLoggedIn() && !isWebsiteRoute()">
     <mat-toolbar-row>
       <span class="app-title">AI Haber Paneli</span>
       
@@ -41,7 +42,7 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <main class="main-content">
+  <main [class.main-content]="!isWebsiteRoute()" [class.website-main]="isWebsiteRoute()">
     <router-outlet></router-outlet>
   </main>
 </div>

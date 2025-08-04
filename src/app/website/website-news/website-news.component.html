@@ -1,0 +1,144 @@
+<div class="news-container">
+  <!-- Header Section -->
+  <section class="news-header">
+    <div class="header-content">
+      <h1>Haberler</h1>
+      <p>En güncel haberler ve gelişmeler</p>
+    </div>
+  </section>
+
+  <!-- Filters Section -->
+  <section class="filters-section">
+    <div class="filters-container">
+      <!-- Search -->
+      <div class="search-container">
+        <div class="search-field-container">
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm" 
+            (keyup.enter)="onSearch()" 
+            placeholder="Haber ara..."
+            class="search-input">
+          <mat-icon class="search-icon">search</mat-icon>
+        </div>
+        <button class="search-button" (click)="onSearch()">
+          Ara
+        </button>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="category-container">
+        <label for="categorySelect">Kategori:</label>
+        <select id="categorySelect" [(ngModel)]="selectedCategory" (change)="onCategoryChange()" class="category-select">
+          <option *ngFor="let category of categories" [value]="category.id">
+            {{ category.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- News Grid -->
+  <section class="news-grid-section">
+    <div class="news-container-inner">
+      <!-- Loading State -->
+      <div class="loading-container" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+        <p>Haberler yükleniyor...</p>
+      </div>
+
+      <!-- No Results -->
+      <div class="no-results" *ngIf="!loading && news.length === 0">
+        <mat-icon>info</mat-icon>
+        <h3>Haber bulunamadı</h3>
+        <p>Arama kriterlerinizi değiştirerek tekrar deneyin.</p>
+      </div>
+
+      <!-- News Grid -->
+      <div class="news-grid" *ngIf="!loading && news.length > 0">
+        <mat-card class="news-card" *ngFor="let item of news" (click)="navigateToNews(item.id)">
+          <div class="news-image" [style.background-image]="'url(' + item.resimUrl + ')'">
+            <div class="news-category-badge">
+              {{ getCategoryName(item.kategoriId) }}
+            </div>
+            <div class="news-overlay">
+              <span class="news-date">{{ formatDate(item.yayinTarihi) }}</span>
+            </div>
+          </div>
+          
+          <mat-card-content class="news-content">
+            <h3 class="news-title">{{ item.baslik }}</h3>
+            <p class="news-excerpt">{{ truncateText(item.icerik) }}</p>
+            
+            <div class="news-stats">
+              <div class="stats-left">
+                <span class="stat-item">
+                  <mat-icon>visibility</mat-icon>
+                  {{ item.okunmaSayisi }} okunma
+                </span>
+                <span class="stat-item">
+                  <mat-icon>mouse</mat-icon>
+                  {{ item.tiklanmaSayisi }} tıklama
+                </span>
+              </div>
+              <button mat-button color="primary" class="read-more-btn" (click)="$event.stopPropagation(); navigateToNews(item.id)">
+                Devamını Oku
+                <mat-icon>arrow_forward</mat-icon>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-container" *ngIf="!loading && totalPages > 1">
+        <div class="pagination-info">
+          <span>{{ totalItems }} haberden {{ ((currentPage - 1) * pageSize) + 1 }}-{{ getMin(currentPage * pageSize, totalItems) }} arası gösteriliyor</span>
+        </div>
+        
+        <div class="pagination-controls">
+          <!-- First Page -->
+          <button mat-icon-button 
+                  [disabled]="currentPage === 1" 
+                  (click)="onPageChange(1)"
+                  class="pagination-btn">
+            <mat-icon>first_page</mat-icon>
+          </button>
+
+          <!-- Previous Page -->
+          <button mat-icon-button 
+                  [disabled]="currentPage === 1" 
+                  (click)="onPageChange(currentPage - 1)"
+                  class="pagination-btn">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+
+          <!-- Page Numbers -->
+          <button mat-button 
+                  *ngFor="let page of getPaginationPages()"
+                  [class.active]="page === currentPage"
+                  (click)="onPageChange(page)"
+                  class="pagination-number">
+            {{ page }}
+          </button>
+
+          <!-- Next Page -->
+          <button mat-icon-button 
+                  [disabled]="currentPage === totalPages" 
+                  (click)="onPageChange(currentPage + 1)"
+                  class="pagination-btn">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+
+          <!-- Last Page -->
+          <button mat-icon-button 
+                  [disabled]="currentPage === totalPages" 
+                  (click)="onPageChange(totalPages)"
+                  class="pagination-btn">
+            <mat-icon>last_page</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
