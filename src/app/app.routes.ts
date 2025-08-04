@@ -46,8 +46,6 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'news', component: NewsGridComponent, canActivate: [AuthGuard] },
-  { path: 'mostRead', component: MostReadNewsComponent, canActivate: [AuthGuard] }, // <-- Bu satırı ekleyin
-  { path: 'mostClicked', component: MostClickedNewsComponent, canActivate: [AuthGuard] }, // <-- En çok tıklanan haberler için rota ekleyin
   { path: 'about-us', component: AboutUsComponent },
   
   { path: '**', redirectTo: '/website/home' }

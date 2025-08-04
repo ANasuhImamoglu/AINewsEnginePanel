@@ -101,7 +101,7 @@
               <button 
                 type="submit"
                 class="btn btn-sm btn-primary"
-                [disabled]="!replyText[comment.id]?.trim()">
+                [disabled]="!replyText[comment.id] || !replyText[comment.id].trim()">
                 Yanıt Gönder
               </button>
               <button 
