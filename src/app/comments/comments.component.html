@@ -50,12 +50,12 @@
         <div mat-card-avatar class="comment-avatar">
           <mat-icon>person</mat-icon>
         </div>
-        <mat-card-title>{{comment.author}}</mat-card-title>
-        <mat-card-subtitle>{{formatDate(comment.createdAt)}}</mat-card-subtitle>
+        <mat-card-title>{{comment.kullaniciAdi}}</mat-card-title>
+        <mat-card-subtitle>{{formatDate(comment.tarih)}}</mat-card-subtitle>
       </mat-card-header>
       
       <mat-card-content>
-        <p class="comment-content">{{comment.content}}</p>
+        <p class="comment-content">{{comment.yorum}}</p>
       </mat-card-content>
       
       <mat-card-actions>
@@ -134,13 +134,13 @@
               <mat-icon>person</mat-icon>
             </div>
             <div class="reply-info">
-              <span class="reply-author">{{reply.author}}</span>
-              <span class="reply-date">{{formatDate(reply.createdAt)}}</span>
+              <span class="reply-author">{{reply.kullaniciAdi}}</span>
+              <span class="reply-date">{{formatDate(reply.tarih)}}</span>
             </div>
           </div>
           
           <div class="reply-content">
-            <p>{{reply.content}}</p>
+            <p>{{reply.yorum}}</p>
           </div>
           
           <div class="reply-actions">
