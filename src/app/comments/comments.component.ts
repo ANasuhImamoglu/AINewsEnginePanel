@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -29,13 +29,12 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./comments.component.css']
 })
 export class CommentsComponent implements OnInit {
+  @Input() haberId: number = 1; // Parent component'den haber ID'si alınacak
+  
   comments: Comment[] = [];
   newComment: string = '';
   replyContents: { [key: number]: string } = {};
   isLoading: boolean = false;
-  
-  // Varsayılan haber ID'si (test için)
-  private currentHaberId: number = 1;
 
   constructor(
     private commentsService: CommentsService,
@@ -52,8 +51,8 @@ export class CommentsComponent implements OnInit {
 
   loadComments(): void {
     this.isLoading = true;
-    console.log('Loading comments for haber ID:', this.currentHaberId);
-    this.commentsService.getComments(this.currentHaberId).subscribe({
+    console.log('Loading comments for haber ID:', this.haberId);
+    this.commentsService.getComments(this.haberId).subscribe({
       next: (comments: Comment[]) => {
         console.log('Comments received:', comments);
         this.comments = comments.map((comment: Comment) => ({
@@ -81,7 +80,7 @@ export class CommentsComponent implements OnInit {
       content: this.newComment,
       author: this.authService.getCurrentUsername(),
       authorId: this.authService.getCurrentUserId(),
-      haberId: this.currentHaberId
+      haberId: this.haberId
     };
 
     this.commentsService.addComment(comment).subscribe({
@@ -206,7 +205,7 @@ export class CommentsComponent implements OnInit {
     });
   }
 
-  formatDate(date: Date): string {
+  formatDate(date: Date | string): string {
     return new Date(date).toLocaleString('tr-TR', {
       year: 'numeric',
       month: 'short',

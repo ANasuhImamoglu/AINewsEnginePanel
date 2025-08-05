@@ -240,7 +240,7 @@ export class AuthService {
     }
     
     // Token'dan username'i çıkarmaya çalış
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
@@ -260,7 +260,7 @@ export class AuthService {
     }
     
     // Token'dan user ID'yi çıkarmaya çalış
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
