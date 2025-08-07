@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MaterialModule } from '../../material.module';
 import { NewsService, Haber } from '../../services/news.service';
+import { CategoryService } from '../../services/category.service';
 import { CommentsComponent } from '../comments/comments.component';
 
 @Component({
@@ -21,7 +22,8 @@ export class NewsDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private newsService: NewsService
+    private newsService: NewsService,
+    private categoryService: CategoryService
   ) {}
 
   ngOnInit(): void {
@@ -95,14 +97,7 @@ export class NewsDetailComponent implements OnInit {
   }
 
   getCategoryName(categoryId?: number): string {
-    const categories: {[key: number]: string} = {
-      1: 'Teknoloji',
-      2: 'Spor', 
-      3: 'Ekonomi',
-      4: 'Sağlık',
-      5: 'Eğitim'
-    };
-    return categoryId ? categories[categoryId] || 'Genel' : 'Genel';
+    return this.categoryService.getCategoryName(categoryId);
   }
 
   shareNews(): void {
