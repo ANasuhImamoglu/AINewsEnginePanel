@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MaterialModule } from '../../material.module';
 import { NewsService, Haber, PagedResult } from '../../services/news.service';
+import { CategoryService, Category } from '../../services/category.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -17,30 +18,43 @@ export class WebsiteNewsComponent implements OnInit {
   loading = true;
   searchTerm = '';
   selectedCategory = 0;
+  categories: Category[] = [];
   
   // Pagination
   currentPage = 1;
   pageSize = 12;
   totalItems = 0;
   totalPages = 0;
-  
-  // Categories (Bu liste backend'ten gelebilir)
-  categories = [
-    { id: 0, name: 'Tüm Kategoriler' },
-    { id: 1, name: 'Teknoloji' },
-    { id: 2, name: 'Spor' },
-    { id: 3, name: 'Ekonomi' },
-    { id: 4, name: 'Sağlık' },
-    { id: 5, name: 'Eğitim' }
-  ];
 
   constructor(
     private newsService: NewsService,
+    private categoryService: CategoryService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.loadCategories();
     this.loadNews();
+  }
+
+  loadCategories(): void {
+    this.categoryService.getCategoriesForFilter().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: (error) => {
+        console.error('Categories loading error:', error);
+        // Fallback kategoriler
+        this.categories = [
+          { id: 0, name: 'Tüm Kategoriler' },
+          { id: 1, name: 'Teknoloji' },
+          { id: 2, name: 'Spor' },
+          { id: 3, name: 'Ekonomi' },
+          { id: 4, name: 'Sağlık' },
+          { id: 5, name: 'Eğitim' }
+        ];
+      }
+    });
   }
 
   loadNews(): void {
@@ -66,7 +80,9 @@ export class WebsiteNewsComponent implements OnInit {
   }
 
   searchNews(): void {
-    this.newsService.searchNews(this.searchTerm, this.currentPage, this.pageSize).subscribe({
+    const categoryId = this.selectedCategory === 0 ? undefined : this.selectedCategory;
+    
+    this.newsService.searchNews(this.searchTerm, this.currentPage, this.pageSize, categoryId).subscribe({
       next: (result: PagedResult<Haber>) => {
         this.news = result.items;
         this.totalItems = result.pagination.totalItems;
@@ -82,13 +98,14 @@ export class WebsiteNewsComponent implements OnInit {
 
   onSearch(): void {
     this.currentPage = 1;
-    this.selectedCategory = 0; // Arama yaparken kategori filtresini sıfırla
+    // Arama yaparken kategori filtresini sıfırlama - kullanıcı kategori seçmişse korunur
     this.loadNews();
   }
 
   onCategoryChange(): void {
     this.currentPage = 1;
-    this.searchTerm = ''; // Kategori değiştirirken arama terimini sıfırla
+    // Kategori değiştirirken arama terimini koruyabiliriz veya sıfırlayabiliriz
+    // this.searchTerm = ''; // Bu satırı açarsanız kategori değiştiğinde arama sıfırlanır
     this.loadNews();
   }
 
@@ -138,9 +155,7 @@ export class WebsiteNewsComponent implements OnInit {
   }
 
   getCategoryName(categoryId?: number): string {
-    if (!categoryId) return 'Genel';
-    const category = this.categories.find(c => c.id === categoryId);
-    return category ? category.name : 'Genel';
+    return this.categoryService.getCategoryName(categoryId);
   }
 
   getMin(a: number, b: number): number {

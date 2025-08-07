@@ -80,13 +80,18 @@ export class NewsService {
   }
 
   // Backend'e arama isteği gönderen metod
-  searchNews(searchTerm: string, pageNumber: number = 1, pageSize: number = 10): Observable<PagedResult<Haber>> {
+  searchNews(searchTerm: string, pageNumber: number = 1, pageSize: number = 10, kategoriId?: number): Observable<PagedResult<Haber>> {
     if (!searchTerm || searchTerm.trim() === '') {
-      return this.getNews(pageNumber, pageSize); // Arama terimi boşsa tüm haberleri getir
+      return this.getNews(pageNumber, pageSize, kategoriId); // Arama terimi boşsa tüm haberleri getir
     }
     
     // Backend'e search isteği gönder - Backend'te "page" parametresi beklendiği için "page" kullan
     let params = `?term=${encodeURIComponent(searchTerm.trim())}&page=${pageNumber}&pageSize=${pageSize}`;
+    
+    // Kategori parametresi varsa ekle
+    if (kategoriId && kategoriId !== 0) {
+      params += `&kategoriId=${kategoriId}`;
+    }
     
     return this.http.get<any>(`${this.apiUrl}/search${params}`).pipe(
       map((response: any) => {

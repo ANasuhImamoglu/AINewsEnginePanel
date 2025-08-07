@@ -12,25 +12,49 @@ public class HaberlerController : ControllerBase
         _context = context;
     }
 
-    // GET: api/Haberler?page=1&pageSize=10
+    // GET: api/Haberler?page=1&pageSize=10&kategoriId=1
     [HttpGet]
     public async Task<ActionResult<object>> GetHaberler(
         int page = 1,
-        int pageSize = 10)
+        int pageSize = 10,
+        int? kategoriId = null)
     {
         // Sayfa numarası 1'den başlamalı
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = 10;
         if (pageSize > 100) pageSize = 100; // Maksimum limit
 
-        // Toplam kayıt sayısı
-        var totalCount = await _context.Haberler.CountAsync();
+        // Base query
+        IQueryable<Haber> query = _context.Haberler;
 
-        // Sayfalama ile veri çekme
-        var haberler = await _context.Haberler
+        // Kategori filtresi uygula
+        if (kategoriId.HasValue && kategoriId.Value > 0)
+        {
+            query = query.Where(h => h.KategoriId == kategoriId.Value);
+        }
+
+        // Toplam kayıt sayısı (filtrelenmiş)
+        var totalCount = await query.CountAsync();
+
+        // Sayfalama ile veri çekme - kategori bilgileri ile birlikte
+        var haberler = await query
+            .Include(h => h.Kategori) // Kategori bilgilerini de getir
             .OrderByDescending(h => h.YayinTarihi) // En yeni haberler önce
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
+            .Select(h => new
+            {
+                h.Id,
+                h.Baslik,
+                h.Icerik,
+                h.ResimUrl,
+                h.YayinTarihi,
+                h.Onaylandi,
+                h.KategoriId,
+                h.OkunmaSayisi,
+                h.TiklanmaSayisi,
+                KategoriAdi = h.Kategori != null ? h.Kategori.Ad : GetKategoriAdi(h.KategoriId)
+            })
             .ToListAsync();
 
         return Ok(new
@@ -42,11 +66,25 @@ public class HaberlerController : ControllerBase
 
     // GET: api/Haberler/most-read
     [HttpGet("most-read")]
-    public async Task<ActionResult<List<Haber>>> GetMostReadNews()
+    public async Task<ActionResult<List<object>>> GetMostReadNews()
     {
         var mostReadNews = await _context.Haberler
+            .Include(h => h.Kategori)
             .OrderByDescending(h => h.OkunmaSayisi)
             .Take(20) // Top 20 en çok okunan
+            .Select(h => new
+            {
+                h.Id,
+                h.Baslik,
+                h.Icerik,
+                h.ResimUrl,
+                h.YayinTarihi,
+                h.Onaylandi,
+                h.KategoriId,
+                h.OkunmaSayisi,
+                h.TiklanmaSayisi,
+                KategoriAdi = h.Kategori != null ? h.Kategori.Ad : GetKategoriAdi(h.KategoriId)
+            })
             .ToListAsync();
 
         return Ok(mostReadNews);
@@ -54,22 +92,37 @@ public class HaberlerController : ControllerBase
 
     // GET: api/Haberler/most-clicked  
     [HttpGet("most-clicked")]
-    public async Task<ActionResult<List<Haber>>> GetMostClickedNews()
+    public async Task<ActionResult<List<object>>> GetMostClickedNews()
     {
         var mostClickedNews = await _context.Haberler
+            .Include(h => h.Kategori)
             .OrderByDescending(h => h.TiklanmaSayisi)
             .Take(20) // Top 20 en çok tıklanan
+            .Select(h => new
+            {
+                h.Id,
+                h.Baslik,
+                h.Icerik,
+                h.ResimUrl,
+                h.YayinTarihi,
+                h.Onaylandi,
+                h.KategoriId,
+                h.OkunmaSayisi,
+                h.TiklanmaSayisi,
+                KategoriAdi = h.Kategori != null ? h.Kategori.Ad : GetKategoriAdi(h.KategoriId)
+            })
             .ToListAsync();
 
         return Ok(mostClickedNews);
     }
 
-    // GET: api/Haberler/search?term=kelime&page=1&pageSize=10
+    // GET: api/Haberler/search?term=kelime&page=1&pageSize=10&kategoriId=1
     [HttpGet("search")]
     public async Task<ActionResult<object>> SearchHaberler(
         string term,
         int page = 1,
-        int pageSize = 10)
+        int pageSize = 10,
+        int? kategoriId = null)
     {
         // Sayfa numarası 1'den başlamalı
         if (page < 1) page = 1;
@@ -77,6 +130,12 @@ public class HaberlerController : ControllerBase
         if (pageSize > 100) pageSize = 100; // Maksimum limit
 
         IQueryable<Haber> query = _context.Haberler;
+
+        // Kategori filtresi uygula
+        if (kategoriId.HasValue && kategoriId.Value > 0)
+        {
+            query = query.Where(h => h.KategoriId == kategoriId.Value);
+        }
 
         // Arama terimi varsa filtrele
         if (!string.IsNullOrWhiteSpace(term))
@@ -91,11 +150,25 @@ public class HaberlerController : ControllerBase
         // Toplam kayıt sayısı (filtrelenmiş)
         var totalCount = await query.CountAsync();
 
-        // Sayfalama ile veri çekme
+        // Sayfalama ile veri çekme - kategori bilgileri ile birlikte
         var haberler = await query
+            .Include(h => h.Kategori) // Kategori bilgilerini de getir
             .OrderByDescending(h => h.YayinTarihi) // En yeni haberler önce
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
+            .Select(h => new
+            {
+                h.Id,
+                h.Baslik,
+                h.Icerik,
+                h.ResimUrl,
+                h.YayinTarihi,
+                h.Onaylandi,
+                h.KategoriId,
+                h.OkunmaSayisi,
+                h.TiklanmaSayisi,
+                KategoriAdi = h.Kategori != null ? h.Kategori.Ad : GetKategoriAdi(h.KategoriId)
+            })
             .ToListAsync();
 
         return Ok(new
@@ -149,5 +222,38 @@ public class HaberlerController : ControllerBase
         await _context.SaveChangesAsync();
 
         return Ok();
+    }
+
+    // GET: api/Haberler/kategori-dagilimi - Test için kategori dağılımını göster
+    [HttpGet("kategori-dagilimi")]
+    public async Task<ActionResult<object>> GetKategoriDagilimi()
+    {
+        var dagilim = await _context.Haberler
+            .GroupBy(h => h.KategoriId)
+            .Select(g => new
+            {
+                KategoriId = g.Key,
+                KategoriAdi = GetKategoriAdi(g.Key),
+                HaberSayisi = g.Count()
+            })
+            .OrderBy(x => x.KategoriId)
+            .ToListAsync();
+
+        return Ok(dagilim);
+    }
+
+    // Helper metod - Kategori ID'sine göre kategori adını döndür
+    private string GetKategoriAdi(int? kategoriId)
+    {
+        return kategoriId switch
+        {
+            1 => "Gündem",
+            2 => "Teknoloji",
+            3 => "Spor",
+            4 => "Dünya",
+            5 => "Sağlık",
+            6 => "Politika",
+            _ => "Genel"
+        };
     }
 }
