@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   ) {
     // Zaten giriş yapmışsa ana sayfaya yönlendir
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['/news']);
+      this.router.navigate(['/website/news']);
     }
   }
 
@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
       next: (success) => {
         this.isLoading = false;
         if (success) {
-          this.router.navigate(['/news']);
+          this.router.navigate(['/website/news']);
         } else {
           this.errorMessage = 'Geçersiz kullanıcı adı veya şifre.';
         }
