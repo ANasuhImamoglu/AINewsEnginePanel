@@ -1,15 +1,6 @@
-// import { Injectable } from '@angular/core';
-
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class NewsService {
-
-//   constructor() { }
-// }
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -48,19 +39,22 @@ export class NewsService {
 
   constructor(private http: HttpClient) { }
 
+
   getNews(pageNumber: number = 1, pageSize: number = 10, kategoriId?: number): Observable<PagedResult<Haber>> {
-    // Backend'te "page" parametresi beklendiği için "page" kullan
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token || ''}`
+    });
+
     let params = `?page=${pageNumber}&pageSize=${pageSize}`;
     if (kategoriId && kategoriId !== 0) {
       params += `&kategoriId=${kategoriId}`;
     }
-    console.log(`xxxxxx:${this.apiUrl}${params}`)
-    return this.http.get<any>(`${this.apiUrl}${params}`).pipe(
+    console.log(`xxxxxx:${this.apiUrl}${params}`);
+
+    return this.http.get<any>(`${this.apiUrl}${params}`, { headers }).pipe(
       map((response: any) => {
-        // Backend'ten gelen format: { data: [...], totalCount: number }
-        // Frontend'in beklediği format: PagedResult<Haber>
         const totalPages = Math.ceil(response.totalCount / pageSize);
-        
         return {
           items: response.data,
           pagination: {
@@ -73,6 +67,7 @@ export class NewsService {
       })
     );
   }
+
 
   // Geriye uyumluluk için eski metod (deprecated)
   getAllNews(): Observable<Haber[]> {

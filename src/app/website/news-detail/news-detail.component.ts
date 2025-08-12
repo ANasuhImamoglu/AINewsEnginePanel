@@ -26,6 +26,12 @@ export class NewsDetailComponent implements OnInit {
     private categoryService: CategoryService
   ) {}
 
+  
+  logout(): void {
+    this.router.navigate(['/login'])
+  }
+
+
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       const id = +params['id'];

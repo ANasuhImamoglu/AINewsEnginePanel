@@ -1,18 +1,3 @@
-// import { Routes } from '@angular/router';
-// import { NewsGridComponent } from './news-grid/news-grid.component';
-// import { LoginComponent } from './login/login.component';
-// import { RegisterComponent } from './register/register.component';
-// import { AuthGuard } from './guards/auth.guard';
-
-// export const routes: Routes = [
-//   { path: '', redirectTo: '/login', pathMatch: 'full' },
-//   { path: 'login', component: LoginComponent },
-//   { path: 'register', component: RegisterComponent },
-//   { path: 'news', component: NewsGridComponent, canActivate: [AuthGuard] },
-//   { path: '**', redirectTo: '/login' }
-// ];
-
-// src/app/app.routes.ts
 
 import { Routes } from '@angular/router';
 import { NewsGridComponent } from './news-grid/news-grid.component';
@@ -37,6 +22,8 @@ export const routes: Routes = [
     component: WebsiteLayoutComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
       { path: 'home', component: HomeComponent },
       { path: 'news', component: WebsiteNewsComponent },
       { path: 'news/:id/:slug', component: NewsDetailComponent },

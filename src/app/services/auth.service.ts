@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 export interface User {
   id?: number;
@@ -43,7 +44,7 @@ export class AuthService {
   private apiUrl = `${environment.apiUrl}/api/Auth`;
   private currentUser: User | null = null;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     // localStorage'dan token ve user bilgilerini yükle
     const savedUser = localStorage.getItem('currentUser');
     const savedToken = localStorage.getItem('token');
@@ -101,6 +102,7 @@ export class AuthService {
   logout(): Observable<any> {
     // Backend'de logout endpoint'i olmadığı için sadece yerel temizlik
     this.clearLocalStorage();
+    this.router.navigate(['/login']);
     return of({});
   }
 
