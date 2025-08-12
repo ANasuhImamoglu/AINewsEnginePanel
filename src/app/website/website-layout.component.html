@@ -28,38 +28,38 @@
           <mat-icon>menu</mat-icon>
         </button>
 
-        <!-- Login Button -->
+        <!-- Çıkış Yap Butonu (Masaüstü) -->
         <div class="nav-actions">
-          <a routerLink="/login" mat-raised-button color="primary" class="login-btn">
-            <mat-icon>login</mat-icon>
-            Giriş Yap
-          </a>
+          <button mat-raised-button color="primary" class="login-btn" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Çıkış Yap
+          </button>
         </div>
-      </div>
 
-      <!-- Mobile Navigation -->
-      <div class="mobile-menu" [class.active]="mobileMenuOpen">
-        <ul class="mobile-nav-list">
-          <li *ngFor="let item of navigationItems">
-            <a [routerLink]="item.path" 
-               routerLinkActive="active" 
-               class="mobile-nav-link"
-               (click)="closeMobileMenu()">
-              <mat-icon>{{ item.icon }}</mat-icon>
-              <span>{{ item.label }}</span>
-            </a>
-          </li>
-          <li class="mobile-login">
-            <a routerLink="/login" 
-               mat-raised-button 
-               color="primary" 
-               class="mobile-login-btn"
-               (click)="closeMobileMenu()">
-              <mat-icon>login</mat-icon>
-              Giriş Yap
-            </a>
-          </li>
-        </ul>
+        <!-- Mobile Navigation -->
+        <div class="mobile-menu" [class.active]="mobileMenuOpen">
+          <ul class="mobile-nav-list">
+            <li *ngFor="let item of navigationItems">
+              <a [routerLink]="item.path" 
+                 routerLinkActive="active" 
+                 class="mobile-nav-link"
+                 (click)="closeMobileMenu()">
+                <mat-icon>{{ item.icon }}</mat-icon>
+                <span>{{ item.label }}</span>
+              </a>
+            </li>
+            <li class="mobile-login">
+              <a routerLink="/login" 
+                 mat-raised-button 
+                 color="primary" 
+                 class="mobile-login-btn"
+                 (click)="closeMobileMenu()">
+                <mat-icon>login</mat-icon>
+                Giriş Yap
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   </header>

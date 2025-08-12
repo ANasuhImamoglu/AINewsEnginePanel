@@ -20,8 +20,11 @@ export class HomeComponent implements OnInit {
   constructor(
     private newsService: NewsService,
     private router: Router
+
+    
   ) {}
 
+  
   ngOnInit(): void {
     this.loadFeaturedNews();
     this.loadLatestNews();

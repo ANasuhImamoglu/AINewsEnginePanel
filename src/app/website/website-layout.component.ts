@@ -1,7 +1,9 @@
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { MaterialModule } from '../material.module';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-website-layout',
@@ -27,11 +29,17 @@ export class WebsiteLayoutComponent {
     { url: '#', icon: 'linkedin', label: 'LinkedIn' }
   ];
 
+  constructor(private router: Router, private authService:AuthService) {}
+
   toggleMobileMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen;
   }
 
   closeMobileMenu(): void {
     this.mobileMenuOpen = false;
+  }
+
+    logout() {
+    this.authService.logout();
   }
 }

@@ -37,7 +37,7 @@ export class WebsiteAboutComponent {
       name: 'Ahmet Nasuh İmamoğlu',
       position: 'Kurucu & Proje Yöneticisi',
       image: 'assets/team/team3.jpg',
-      bio: 'AI ve haber teknolojileri alanında uzman, projenin kurucusu.',
+      bio: 'Backend API geliştirme ve AI teknolojileri alanında deneyimli, projenin kurucusu.',
       social: {
         linkedin: '#',
         twitter: '#',
@@ -48,7 +48,7 @@ export class WebsiteAboutComponent {
       name: 'Taha Yiğit Göksu',
       position: 'UI/UX Tasarımcı',
       image: 'assets/team/team4.jpg',
-      bio: 'Kullanıcı deneyimi ve arayüz tasarımı konusunda yaratıcı çözümler sunar.',
+      bio: 'Kullanıcı deneyimi ve arayüz tasarımı konusunda yaratıcı çözümler sunar. Çapraz platform mobil uygulamalar geliştirerek modern ve kullanıcı dostu arayüzler tasarlar.',
       social: {
         linkedin: '#',
         twitter: '#',
