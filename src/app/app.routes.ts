@@ -24,10 +24,10 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
-      { path: 'home', component: HomeComponent },
-      { path: 'news', component: WebsiteNewsComponent },
-      { path: 'news/:id/:slug', component: NewsDetailComponent },
-      { path: 'about', component: WebsiteAboutComponent }
+      { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+      { path: 'news', component: WebsiteNewsComponent, canActivate: [AuthGuard] },
+      { path: 'news/:id/:slug', component: NewsDetailComponent, canActivate: [AuthGuard] },
+      { path: 'about', component: WebsiteAboutComponent, canActivate: [AuthGuard] }
     ]
   },
   

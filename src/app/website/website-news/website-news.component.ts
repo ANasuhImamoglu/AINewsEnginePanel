@@ -35,13 +35,6 @@ export class WebsiteNewsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    var isloggedin =this.authService.isLoggedIn()
-    if (!isloggedin) {
-    setTimeout(() => {
-      this.router.navigate(['/login']);
-    }, 0);
-    return;
-    }
   this.loadCategories();
   this.loadNews();
   }
@@ -159,8 +152,9 @@ export class WebsiteNewsComponent implements OnInit {
   }
 
   truncateText(text: string, maxLength: number = 200): string {
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + '...';
+  if (!text) return '';
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength) + '...';
   }
 
   getCategoryName(categoryId?: number): string {

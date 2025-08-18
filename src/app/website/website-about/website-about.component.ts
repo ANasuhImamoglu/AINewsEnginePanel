@@ -92,12 +92,6 @@ export class WebsiteAboutComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    const isloggedin = this.authService.isLoggedIn();
-    if (!isloggedin) {
-      setTimeout(() => {
-        this.router.navigate(['/login']);
-      }, 0);
-      return;
-    }
+    
   }
 }

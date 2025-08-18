@@ -79,21 +79,26 @@ export class NewsService {
     if (!searchTerm || searchTerm.trim() === '') {
       return this.getNews(pageNumber, pageSize, kategoriId); // Arama terimi boşsa tüm haberleri getir
     }
-    
+
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token || ''}`
+    });
+
     // Backend'e search isteği gönder - Backend'te "page" parametresi beklendiği için "page" kullan
     let params = `?term=${encodeURIComponent(searchTerm.trim())}&page=${pageNumber}&pageSize=${pageSize}`;
-    
+
     // Kategori parametresi varsa ekle
     if (kategoriId && kategoriId !== 0) {
       params += `&kategoriId=${kategoriId}`;
     }
-    
-    return this.http.get<any>(`${this.apiUrl}/search${params}`).pipe(
+
+    return this.http.get<any>(`${this.apiUrl}/search${params}`, { headers }).pipe(
       map((response: any) => {
         // Backend'ten gelen format: { data: [...], totalCount: number }
         // Frontend'in beklediği format: PagedResult<Haber>
         const totalPages = Math.ceil(response.totalCount / pageSize);
-        
+
         return {
           items: response.data,
           pagination: {
