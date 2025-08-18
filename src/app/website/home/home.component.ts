@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   mostReadNews: Haber[] = [];
   loading = true;
 
+
   constructor(
     private newsService: NewsService,
     private router: Router
@@ -26,9 +27,9 @@ export class HomeComponent implements OnInit {
 
   
   ngOnInit(): void {
-    this.loadFeaturedNews();
-    this.loadLatestNews();
-    this.loadMostReadNews();
+  this.loadFeaturedNews();
+  this.loadLatestNews();
+  this.loadMostReadNews();
   }
 
   loadFeaturedNews(): void {

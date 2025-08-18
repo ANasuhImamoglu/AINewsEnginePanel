@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
   ) {
     // Zaten giriş yapmışsa ana sayfaya yönlendir
     if (this.authService.isLoggedIn()) {
+      console.log('User is already logged in, redirecting to news page.');
       this.router.navigate(['/website/news']);
     }
   }

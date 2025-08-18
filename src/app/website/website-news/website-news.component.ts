@@ -5,6 +5,7 @@ import { MaterialModule } from '../../material.module';
 import { NewsService, Haber, PagedResult } from '../../services/news.service';
 import { CategoryService, Category } from '../../services/category.service';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-website-news',
@@ -29,12 +30,13 @@ export class WebsiteNewsComponent implements OnInit {
   constructor(
     private newsService: NewsService,
     private categoryService: CategoryService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
-    this.loadCategories();
-    this.loadNews();
+  this.loadCategories();
+  this.loadNews();
   }
 
   loadCategories(): void {
@@ -150,8 +152,9 @@ export class WebsiteNewsComponent implements OnInit {
   }
 
   truncateText(text: string, maxLength: number = 200): string {
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + '...';
+  if (!text) return '';
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength) + '...';
   }
 
   getCategoryName(categoryId?: number): string {
