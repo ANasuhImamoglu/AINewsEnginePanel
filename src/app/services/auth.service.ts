@@ -113,7 +113,13 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return this.currentUser !== null;
+    var token = localStorage.getItem('token'); 
+    var user = localStorage.getItem('currentUser');
+    var isloggedin = (token != null && user != null);
+    // console.log('user: ', user);
+    // console.log('token: ', token);
+    // console.log('Is user logged in?', isloggedin);
+    return isloggedin;
   }
 
   getToken(): string | null {

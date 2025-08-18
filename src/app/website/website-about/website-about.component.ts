@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material.module';
@@ -22,7 +24,7 @@ export class WebsiteAboutComponent {
         github: '#'
       }
     },
-    {
+   {
       name: 'Eren Özgül',
       position: 'Backend Geliştirici',
       image: 'assets/team/team2.jpg',
@@ -82,8 +84,20 @@ export class WebsiteAboutComponent {
 
   stats = [
     { value: '10,000+', label: 'Günlük Haber' },
-    { value: '50,000+', label: 'Aktif Kullanıcı' },
+    { value: '70,000+', label: 'Aktif Kullanıcı' },
     { value: '25+', label: 'Haber Kategorisi' },
     { value: '99.9%', label: 'Uptime' }
   ];
+
+  constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    const isloggedin = this.authService.isLoggedIn();
+    if (!isloggedin) {
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 0);
+      return;
+    }
+  }
 }

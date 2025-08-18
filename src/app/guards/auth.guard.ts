@@ -13,27 +13,17 @@ export class AuthGuard implements CanActivate {
     private router: Router
   ) {}
 
-  canActivate(): Observable<boolean> | boolean {
-    const isLoggedIn = this.authService.isLoggedIn();
-    
-    if (!isLoggedIn) {
-      this.router.navigate(['/login']);
-      return false;
-    }
-
-    // Token doğrulama yap
+  canActivate(): Observable<boolean> {
     return this.authService.validateToken().pipe(
       map((isValid: boolean) => {
         if (isValid) {
           return true;
         } else {
-          // Token geçersizse login sayfasına yönlendir
           this.router.navigate(['/login']);
           return false;
         }
       }),
       catchError(() => {
-        // Hata durumunda login sayfasına yönlendir
         this.router.navigate(['/login']);
         return of(false);
       })

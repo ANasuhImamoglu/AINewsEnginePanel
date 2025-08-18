@@ -15,7 +15,7 @@ import { AuthService } from '../services/auth.service';
 export class WebsiteLayoutComponent {
   currentYear = new Date().getFullYear();
   mobileMenuOpen = false;
-
+  
   navigationItems = [
     { path: '/website/home', label: 'Ana Sayfa', icon: 'home' },
     { path: '/website/news', label: 'Haberler', icon: 'article' },

@@ -1,3 +1,4 @@
+import { AuthService } from '../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -17,18 +18,23 @@ export class HomeComponent implements OnInit {
   mostReadNews: Haber[] = [];
   loading = true;
 
-  constructor(
-    private newsService: NewsService,
-    private router: Router
-
-    
-  ) {}
-
+constructor(
+  private newsService: NewsService,
+  private router: Router,
+  private authService: AuthService // constructor'a ekle
+) {}
   
   ngOnInit(): void {
-    this.loadFeaturedNews();
-    this.loadLatestNews();
-    this.loadMostReadNews();
+  const isloggedin = this.authService.isLoggedIn();
+  if (!isloggedin) {
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 0);
+    return;
+  }
+  this.loadFeaturedNews();
+  this.loadLatestNews();
+  this.loadMostReadNews();
   }
 
   loadFeaturedNews(): void {

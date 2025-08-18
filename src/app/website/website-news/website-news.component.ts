@@ -5,6 +5,7 @@ import { MaterialModule } from '../../material.module';
 import { NewsService, Haber, PagedResult } from '../../services/news.service';
 import { CategoryService, Category } from '../../services/category.service';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-website-news',
@@ -29,12 +30,20 @@ export class WebsiteNewsComponent implements OnInit {
   constructor(
     private newsService: NewsService,
     private categoryService: CategoryService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
-    this.loadCategories();
-    this.loadNews();
+    var isloggedin =this.authService.isLoggedIn()
+    if (!isloggedin) {
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 0);
+    return;
+    }
+  this.loadCategories();
+  this.loadNews();
   }
 
   loadCategories(): void {
