@@ -20,7 +20,7 @@ export class WebsiteNewsComponent implements OnInit {
   searchTerm = '';
   selectedCategory = 0;
   categories: Category[] = [];
-  
+
   // Pagination
   currentPage = 1;
   pageSize = 12;
@@ -32,11 +32,11 @@ export class WebsiteNewsComponent implements OnInit {
     private categoryService: CategoryService,
     private router: Router,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-  this.loadCategories();
-  this.loadNews();
+    this.loadCategories();
+    this.loadNews();
   }
 
   loadCategories(): void {
@@ -62,28 +62,24 @@ export class WebsiteNewsComponent implements OnInit {
   loadNews(): void {
     this.loading = true;
     const categoryId = this.selectedCategory === 0 ? undefined : this.selectedCategory;
-    
-    if (this.searchTerm.trim()) {
-      this.searchNews();
-    } else {
-      this.newsService.getNews(this.currentPage, this.pageSize, categoryId).subscribe({
-        next: (result: PagedResult<Haber>) => {
-          this.news = result.items;
-          this.totalItems = result.pagination.totalItems;
-          this.totalPages = result.pagination.totalPages;
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('News loading error:', error);
-          this.loading = false;
-        }
-      });
-    }
+
+    this.newsService.getNews(this.currentPage, this.pageSize, categoryId, this.searchTerm).subscribe({
+      next: (result: PagedResult<Haber>) => {
+        this.news = result.items;
+        this.totalItems = result.pagination.totalItems;
+        this.totalPages = result.pagination.totalPages;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('News loading error:', error);
+        this.loading = false;
+      }
+    });
   }
 
   searchNews(): void {
     const categoryId = this.selectedCategory === 0 ? undefined : this.selectedCategory;
-    
+
     this.newsService.searchNews(this.searchTerm, this.currentPage, this.pageSize, categoryId).subscribe({
       next: (result: PagedResult<Haber>) => {
         this.news = result.items;
@@ -104,13 +100,6 @@ export class WebsiteNewsComponent implements OnInit {
     this.loadNews();
   }
 
-  onCategoryChange(): void {
-    this.currentPage = 1;
-    // Kategori değiştirirken arama terimini koruyabiliriz veya sıfırlayabiliriz
-    // this.searchTerm = ''; // Bu satırı açarsanız kategori değiştiğinde arama sıfırlanır
-    this.loadNews();
-  }
-
   onPageChange(page: number): void {
     this.currentPage = page;
     this.loadNews();
@@ -125,18 +114,18 @@ export class WebsiteNewsComponent implements OnInit {
   getPaginationPages(): number[] {
     const pages: number[] = [];
     const maxVisible = 5;
-    
+
     let start = Math.max(1, this.currentPage - Math.floor(maxVisible / 2));
     let end = Math.min(this.totalPages, start + maxVisible - 1);
-    
+
     if (end - start + 1 < maxVisible) {
       start = Math.max(1, end - maxVisible + 1);
     }
-    
+
     for (let i = start; i <= end; i++) {
       pages.push(i);
     }
-    
+
     return pages;
   }
 
@@ -152,9 +141,9 @@ export class WebsiteNewsComponent implements OnInit {
   }
 
   truncateText(text: string, maxLength: number = 200): string {
-  if (!text) return '';
-  if (text.length <= maxLength) return text;
-  return text.substring(0, maxLength) + '...';
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
   }
 
   getCategoryName(categoryId?: number): string {
@@ -163,5 +152,21 @@ export class WebsiteNewsComponent implements OnInit {
 
   getMin(a: number, b: number): number {
     return Math.min(a, b);
+  }
+
+  fetchRssNews(): void {
+    const rssUrl = 'https://www.haberturk.com/rss/kategori/gundem.xml'; // Buraya gerçek RSS adresini yazabilirsin
+    const kategoriId = this.selectedCategory || 1;
+
+    this.newsService.fetchRssNews(rssUrl, kategoriId).subscribe({
+
+      next: (response) => {
+        alert('RSS haberleri başarıyla çekildi!');
+        this.loadNews(); // Haberleri güncellemek için
+      },
+      error: (err) => {
+        alert('RSS haberleri çekilemedi!');
+      }
+    });
   }
 }

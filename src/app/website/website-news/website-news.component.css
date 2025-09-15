@@ -1,3 +1,20 @@
+/* Mat siyah, modern RSS butonu */
+.rss-black-btn {
+  background: linear-gradient(180deg, #222 0%, #111 100%);
+  color: #fff !important;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  font-weight: 600;
+  padding: 8px 20px;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.rss-black-btn:hover {
+  background: linear-gradient(180deg, #333 0%, #222 100%);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
 .news-container {
   min-height: 100vh;
   background: #f8f9fa;
@@ -57,6 +74,22 @@
   position: relative;
   flex: 1;
   max-width: 400px;
+  }
+
+  /* Çarpı (clear) butonu için stil */
+  .clear-search-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    color: #888;
+    z-index: 2;
 }
 
 .search-input {

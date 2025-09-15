@@ -49,9 +49,9 @@ import { AuthService } from '../services/auth.service';
           <strong>Kategori ID:</strong>
           <p>{{ data.kategoriId || 'Belirtilmemiş' }}</p>
         </div>
-        <div class="detail-item" *ngIf="data.resimUrl">
+        <div class="detail-item" *ngIf="data.resimYolu">
           <strong>Resim:</strong>
-          <img [src]="data.resimUrl" alt="Haber Resmi" class="news-image">
+          <img [src]="data.resimYolu" alt="Haber Resmi" class="news-image">
         </div>
         <div class="detail-item">
           <strong>Durum:</strong>

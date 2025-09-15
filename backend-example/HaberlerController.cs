@@ -1,3 +1,132 @@
+using CodeHollow.FeedReader;
+
+
+    // POST: api/Haberler/fetch-rss
+    [HttpPost("fetch-rss")]
+    public async Task<IActionResult> FetchRss([FromBody] FetchRssRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.RssUrl))
+            return BadRequest(new { message = "RSS URL boş olamaz." });
+
+        // RSS okuma kütüphanesi ile haberleri çek
+        var feed = await CodeHollow.FeedReader.FeedReader.ReadAsync(request.RssUrl);
+
+        int eklenen = 0;
+        foreach (var item in feed.Items)
+        {
+            bool exists = await _context.Haberler.AnyAsync(h => h.Baslik == item.Title);
+            if (exists) continue;
+
+            var haber = new Haber
+            {
+                Baslik = item.Title,
+                Icerik = item.Description,
+                ResimUrl = item.ImageUrl ?? "",
+                YayinTarihi = item.PublishingDate ?? DateTime.Now,
+                Onaylandi = true,
+                KategoriId = request.KategoriId,
+                OkunmaSayisi = 0,
+                TiklanmaSayisi = 0
+            };
+            _context.Haberler.Add(haber);
+            eklenen++;
+        }
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = $"RSS haberleri başarıyla eklendi! (Eklenen: {eklenen})" });
+    }
+
+using CodeHollow.FeedReader;
+[ApiController]
+[Route("api/[controller]")]
+public class HaberlerController : ControllerBase
+
+    // POST: api/Haberler/fetch-rss
+    [HttpPost("fetch-rss")]
+    public async Task<IActionResult> FetchRss([FromBody] FetchRssRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.RssUrl))
+            return BadRequest(new { message = "RSS URL boş olamaz." });
+
+        var feed = await FeedReader.ReadAsync(request.RssUrl);
+        int eklenen = 0;
+        foreach (var item in feed.Items)
+        {
+            bool exists = await _context.Haberler.AnyAsync(h => h.Baslik == item.Title);
+            if (exists) continue;
+
+            var haber = new Haber
+            {
+                Baslik = item.Title,
+                Icerik = item.Description,
+                ResimYolu = item.ImageUrl ?? "",
+                YayinTarihi = item.PublishingDate ?? System.DateTime.Now,
+                Onaylandi = true,
+                KategoriId = request.KategoriId,
+                OkunmaSayisi = 0,
+                TiklanmaSayisi = 0
+            };
+            _context.Haberler.Add(haber);
+            eklenen++;
+        }
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = $"RSS haberleri başarıyla eklendi! (Eklenen: {eklenen})" });
+    }
+
+    public class FetchRssRequest
+    {
+        public string RssUrl { get; set; }
+        public int KategoriId { get; set; }
+    }
+{
+    private readonly ApplicationDbContext _context;
+
+    public HaberlerController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    // POST: api/Haberler/fetch-rss
+    [HttpPost("fetch-rss")]
+    public async Task<IActionResult> FetchRss([FromBody] FetchRssRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.RssUrl))
+            return BadRequest(new { message = "RSS URL boş olamaz." });
+
+        // RSS okuma kütüphanesi ile haberleri çek
+        var feed = await FeedReader.ReadAsync(request.RssUrl);
+
+        int eklenen = 0;
+        foreach (var item in feed.Items)
+        {
+            bool exists = await _context.Haberler.AnyAsync(h => h.Baslik == item.Title);
+            if (exists) continue;
+
+            var haber = new Haber
+            {
+                Baslik = item.Title,
+                Icerik = item.Description,
+                ResimUrl = item.ImageUrl ?? "",
+                YayinTarihi = item.PublishingDate ?? DateTime.Now,
+                Onaylandi = true,
+                KategoriId = request.KategoriId,
+                OkunmaSayisi = 0,
+                TiklanmaSayisi = 0
+            };
+            _context.Haberler.Add(haber);
+            eklenen++;
+        }
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = $"RSS haberleri başarıyla eklendi! (Eklenen: {eklenen})" });
+    }
+
+    public class FetchRssRequest
+    {
+        public string RssUrl { get; set; }
+        public int KategoriId { get; set; }
+    }
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
