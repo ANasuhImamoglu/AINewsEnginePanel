@@ -1,11 +1,6 @@
 <div class="news-container">
   <!-- Header Section -->
-  <section class="news-header">
-    <div class="header-content">
-      <h1>Haberler</h1>
-      <p>En güncel haberler ve gelişmeler</p>
-    </div>
-  </section>
+    
 
   <!-- Filters Section -->
   <section class="filters-section">
@@ -20,16 +15,20 @@
             placeholder="Haber ara..."
             class="search-input">
           <mat-icon class="search-icon">search</mat-icon>
+            <!-- Çarpı (Clear) Butonu -->
+            <button *ngIf="searchTerm" class="clear-search-btn" type="button" (click)="searchTerm = ''; loadNews()" aria-label="Arama kutusunu temizle">
+              <mat-icon>close</mat-icon>
+            </button>
         </div>
         <button class="search-button" (click)="onSearch()">
           Ara
         </button>
       </div>
-
+      <!-- onCategoryChange ->onSearch -->
       <!-- Category Filter -->
       <div class="category-container">
         <label for="categorySelect">Kategori:</label>
-        <select id="categorySelect" [(ngModel)]="selectedCategory" (change)="onCategoryChange()" class="category-select">
+        <select id="categorySelect" [(ngModel)]="selectedCategory" (change)="onSearch()" class="category-select">
           <option *ngFor="let category of categories" [value]="category.id">
             {{ category.name }}
           </option>
@@ -57,7 +56,7 @@
       <!-- News Grid -->
       <div class="news-grid" *ngIf="!loading && news.length > 0">
         <mat-card class="news-card" *ngFor="let item of news" (click)="navigateToNews(item)">
-          <div class="news-image" [style.background-image]="'url(' + item.resimUrl + ')'">
+          <div class="news-image" [style.background-image]="'url(' + item.resimYolu + ')'"> 
             <div class="news-category-badge">
               {{ getCategoryName(item.kategoriId) }}
             </div>
@@ -139,6 +138,11 @@
           </button>
         </div>
       </div>
+
+<!-- Haber! Butonu Pagination'ın Altında -->
+        <div class="pagination-rss-btn-container" style="display: flex; justify-content: center; margin-top: 16px;">
+          <button mat-raised-button class="rss-black-btn" (click)="fetchRssNews()">Haber!</button>
+        </div>
     </div>
   </section>
 </div>

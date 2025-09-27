@@ -10,6 +10,8 @@
             <span class="brand-text">AI Haber</span>
           </a>
         </div>
+  <!-- Navbar'dan hemen sonra, bar -->
+  <ng-container></ng-container>
 
         <!-- Desktop Navigation -->
         <ul class="nav-menu desktop-menu">
@@ -62,6 +64,38 @@
         </div>
       </div>
     </nav>
+    <!-- Navbar'ın hemen altında, bar -->
+    <div class="header-info-bar" style="width:100%; background:#f5f5f5; border-bottom:1px solid #e0e0e0; display:flex; align-items:center; gap:32px; padding:6px 24px;">
+      <div class="current-time-bar" style="width:100%; display:flex; align-items:center; justify-content:center; border-bottom:2px solid #1976d2; padding-bottom:4px; margin-bottom:2px; gap:24px;">
+        <span style="display:inline-flex; align-items:center; font-size:18px; color:#222; font-family:'Roboto',sans-serif; font-weight:500; background:rgba(255,255,255,0.92); border-radius:10px; padding:7px 18px; box-shadow:0 1px 4px rgba(25,118,210,0.07); margin-right:24px;">
+          {{ currentDate }}
+        </span>
+        <span style="display:inline-flex; align-items:center; font-family:'Roboto Mono',monospace; font-size:22px; color:#1976d2; font-weight:700; letter-spacing:1.5px; background:rgba(255,255,255,0.92); border-radius:10px; padding:7px 18px; box-shadow:0 1px 4px rgba(25,118,210,0.07); margin-right:24px;">
+          {{ currentTime }}
+        </span>
+        <span style="display:inline-flex; align-items:center; font-size:18px; color:#1565c0; font-family:'Roboto',sans-serif; font-weight:500; background:rgba(255,255,255,0.97); border-radius:10px; padding:7px 18px; box-shadow:0 1px 4px rgba(25,118,210,0.07); margin-right:24px;">
+          <mat-icon style="margin-right:8px; color:#1565c0; font-size:22px;">wb_sunny</mat-icon>
+          İstanbul&nbsp;23°C, Güneşli
+        </span>
+        <span style="display:inline-flex; align-items:center; font-size:17px; color:#388e3c; font-family:'Roboto',sans-serif; font-weight:500; background:rgba(255,255,255,0.97); border-radius:10px; padding:7px 14px; box-shadow:0 1px 4px rgba(56,142,60,0.07); margin-right:12px;">
+          <mat-icon style="margin-right:6px; color:#388e3c; font-size:20px;">attach_money</mat-icon>
+          Dolar: {{ exchangeRates.USD }}
+        </span>
+        <span style="display:inline-flex; align-items:center; font-size:17px; color:#1976d2; font-family:'Roboto',sans-serif; font-weight:500; background:rgba(255,255,255,0.97); border-radius:10px; padding:7px 14px; box-shadow:0 1px 4px rgba(25,118,210,0.07); margin-right:12px;">
+          <mat-icon style="margin-right:6px; color:#1976d2; font-size:20px;">euro_symbol</mat-icon>
+          Euro: {{ exchangeRates.EUR }}
+        </span>
+        <span style="display:inline-flex; align-items:center; font-size:17px; color:#fbc02d; font-family:'Roboto',sans-serif; font-weight:500; background:rgba(255,255,255,0.97); border-radius:10px; padding:7px 14px; box-shadow:0 1px 4px rgba(251,192,45,0.07); margin-right:12px;">
+          <mat-icon style="margin-right:6px; color:#fbc02d; font-size:20px;">diamond</mat-icon>
+          Altın: {{ exchangeRates.Gold }}
+        </span>
+        <span style="display:inline-flex; align-items:center; font-size:17px; color:#6d4c41; font-family:'Roboto',sans-serif; font-weight:500; background:rgba(255,255,255,0.97); border-radius:10px; padding:7px 14px; box-shadow:0 1px 4px rgba(109,76,65,0.07);">
+          <mat-icon style="margin-right:6px; color:#6d4c41; font-size:20px;">show_chart</mat-icon>
+          Borsa: {{ exchangeRates.BIST }}
+        </span>
+      </div>
+      <!-- Buraya başka bilgiler de ekleyebilirsiniz -->
+    </div>
   </header>
 
   <!-- Main Content -->

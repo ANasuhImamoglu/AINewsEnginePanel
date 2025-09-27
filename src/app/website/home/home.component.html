@@ -1,49 +1,33 @@
 <div class="home-container">
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="hero-content">
-      <h1 class="hero-title">AI Haber Merkezi</h1>
-      <p class="hero-subtitle">En güncel haberler ve analizler burada</p>
-      <button mat-raised-button color="primary" routerLink="/website/news" class="hero-button">
-        Haberleri Keşfet
-      </button>
-    </div>
-    <div class="hero-background"></div>
-  </section>
 
   <!-- Featured News Section -->
   <section class="featured-section" *ngIf="featuredNews.length > 0">
     <div class="section-container">
       <h2 class="section-title">Öne Çıkan Haberler</h2>
-      <div class="featured-grid">
-        <mat-card class="featured-card main-featured" *ngIf="featuredNews[0]" (click)="navigateToNews(featuredNews[0])">
-          <div class="card-image" [style.background-image]="'url(' + featuredNews[0].resimUrl + ')'">
+      <div class="featured-slider-wrapper">
+        <button class="slider-arrow left absolute-left" (click)="prevFeatured()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <mat-card class="featured-card main-featured" *ngIf="featuredNews[currentFeaturedIndex]" (click)="navigateToNews(featuredNews[currentFeaturedIndex])">
+    <div class="card-image" [style.background-image]="'url(' + featuredNews[currentFeaturedIndex].resimYolu + ')'" [ngClass]="slideClass">
             <div class="card-overlay">
-              <span class="date">{{ formatDate(featuredNews[0].yayinTarihi) }}</span>
+              <span class="date">{{ formatDate(featuredNews[currentFeaturedIndex].yayinTarihi) }}</span>
+            </div>
+            <div class="featured-info-box">
+              <h3>{{ featuredNews[currentFeaturedIndex].baslik }}</h3>
             </div>
           </div>
           <mat-card-content>
-            <h3 class="card-title">{{ featuredNews[0].baslik }}</h3>
-            <p class="card-content">{{ truncateText(featuredNews[0].icerik, 200) }}</p>
-            <div class="card-stats">
-              <span><mat-icon>visibility</mat-icon>{{ featuredNews[0].okunmaSayisi }} okunma</span>
-              <span><mat-icon>mouse</mat-icon>{{ featuredNews[0].tiklanmaSayisi }} tıklama</span>
-            </div>
           </mat-card-content>
         </mat-card>
-
-        <div class="featured-side">
-          <mat-card class="featured-card side-featured" *ngFor="let news of featuredNews.slice(1)" (click)="navigateToNews(news)">
-            <div class="side-card-content">
-              <div class="side-image" [style.background-image]="'url(' + news.resimUrl + ')'"></div>
-              <div class="side-text">
-                <span class="date">{{ formatDate(news.yayinTarihi) }}</span>
-                <h4 class="side-title">{{ news.baslik }}</h4>
-                <p class="side-content">{{ truncateText(news.icerik, 100) }}</p>
-              </div>
-            </div>
-          </mat-card>
-        </div>
+        <button class="slider-arrow right absolute-right" (click)="nextFeatured()">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+         <div class="featured-thumbnails">
+           <div class="thumbnail" *ngFor="let news of featuredNews; let i = index" [class.active]="i === currentFeaturedIndex" (click)="currentFeaturedIndex = i">
+             <img [src]="news.resimYolu" [alt]="news.baslik" />
+           </div>
+         </div>
       </div>
     </div>
   </section>
@@ -54,7 +38,7 @@
       <h2 class="section-title">Son Haberler</h2>
       <div class="latest-grid" *ngIf="!loading">
         <mat-card class="news-card" *ngFor="let news of latestNews" (click)="navigateToNews(news)">
-          <div class="card-image" [style.background-image]="'url(' + news.resimUrl + ')'">
+          <div class="card-image" [style.background-image]="'url(' + news.resimYolu + ')'">
             <div class="card-overlay">
               <span class="date">{{ formatDate(news.yayinTarihi) }}</span>
             </div>
@@ -85,7 +69,7 @@
       <div class="most-read-list">
         <mat-card class="most-read-item" *ngFor="let news of mostReadNews; let i = index" (click)="navigateToNews(news)">
           <div class="rank-number">{{ i + 1 }}</div>
-          <div class="most-read-image" [style.background-image]="'url(' + news.resimUrl + ')'"></div>
+          <div class="most-read-image" [style.background-image]="'url(' + news.resimYolu + ')'"></div>
           <div class="most-read-content">
             <h4 class="most-read-title">{{ news.baslik }}</h4>
             <p class="most-read-excerpt">{{ truncateText(news.icerik, 80) }}</p>

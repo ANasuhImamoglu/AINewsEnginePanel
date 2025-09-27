@@ -6,7 +6,7 @@ export interface Haber {
   id: number;
   baslik: string;
   icerik: string;
-  resimUrl: string;
+  resimYolu: string;
   yayinTarihi: string;
   onaylandi: boolean;
     kategoriId?: number;
