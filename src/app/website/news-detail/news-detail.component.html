@@ -43,8 +43,8 @@
   </header>
 
   <!-- News Image -->
-  <div class="news-image-container" *ngIf="news.resimUrl">
-    <img [src]="news.resimUrl" [alt]="news.baslik" class="news-image">
+  <div class="news-image-container" *ngIf="news.resimYolu">
+    <img [src]="news.resimYolu" [alt]="news.baslik" class="news-image">
   </div>
 
   <!-- News Content -->
@@ -72,7 +72,7 @@
     <h2>İlgili Haberler</h2>
     <div class="related-grid">
       <mat-card class="related-card" *ngFor="let relatedItem of relatedNews" (click)="navigateToNews(relatedItem)">
-        <div class="related-image" [style.background-image]="'url(' + relatedItem.resimUrl + ')'"></div>
+        <div class="related-image" [style.background-image]="'url(' + relatedItem.resimYolu + ')'"></div>
         <mat-card-content>
           <h3>{{ relatedItem.baslik }}</h3>
           <p>{{ relatedItem.icerik.substring(0, 100) + '...' }}</p>

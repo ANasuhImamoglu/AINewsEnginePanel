@@ -9,7 +9,7 @@ export interface Haber {
   id: number;
   baslik: string;
   icerik: string;
-  resimUrl: string;
+  resimYolu: string;
   yayinTarihi: string;
   onaylandi: boolean;
   kategoriId?: number;
@@ -35,12 +35,12 @@ export interface PagedResult<T> {
   providedIn: 'root'
 })
 export class NewsService {
-  private apiUrl = `${environment.apiUrl}/api/Haberler`;
+  private apiUrl = `${environment.apiUrl}/api`;
 
   constructor(private http: HttpClient) { }
 
 
-  getNews(pageNumber: number = 1, pageSize: number = 10, kategoriId?: number): Observable<PagedResult<Haber>> {
+  getNews(pageNumber: number = 1, pageSize: number = 10, kategoriId?: number, searchTerm?: string): Observable<PagedResult<Haber>> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token || ''}`
@@ -50,9 +50,12 @@ export class NewsService {
     if (kategoriId && kategoriId !== 0) {
       params += `&kategoriId=${kategoriId}`;
     }
+    if (searchTerm && searchTerm.trim() !== '') {
+      params += `&term=${encodeURIComponent(searchTerm.trim())}`;
+    }
     console.log(`xxxxxx:${this.apiUrl}${params}`);
 
-    return this.http.get<any>(`${this.apiUrl}${params}`, { headers }).pipe(
+    return this.http.get<any>(`${this.apiUrl}/Haberler/search${params}`, { headers }).pipe(
       map((response: any) => {
         const totalPages = Math.ceil(response.totalCount / pageSize);
         return {
@@ -71,7 +74,7 @@ export class NewsService {
 
   // Geriye uyumluluk için eski metod (deprecated)
   getAllNews(): Observable<Haber[]> {
-    return this.http.get<Haber[]>(`${this.apiUrl}/all`);
+    return this.http.get<Haber[]>(`${this.apiUrl}/Haberler/all`);
   }
 
   // Backend'e arama isteği gönderen metod
@@ -93,7 +96,7 @@ export class NewsService {
       params += `&kategoriId=${kategoriId}`;
     }
 
-    return this.http.get<any>(`${this.apiUrl}/search${params}`, { headers }).pipe(
+    return this.http.get<any>(`${this.apiUrl}/Haberler/search${params}`, { headers }).pipe(
       map((response: any) => {
         // Backend'ten gelen format: { data: [...], totalCount: number }
         // Frontend'in beklediği format: PagedResult<Haber>
@@ -113,33 +116,38 @@ export class NewsService {
   }
 
   approveNews(id: number): Observable<Haber> {
-    return this.http.put<Haber>(`${this.apiUrl}/${id}/approve`, {});
+    return this.http.put<Haber>(`${this.apiUrl}/Haberler/${id}/approve`, {});
   }
 
 //
 
     fetchRssNews(rssUrl: string, kategoriId: number): Observable<any> {
-        return this.http.post(`${this.apiUrl}/fetch-rss`, { rssUrl, kategoriId });
+          const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token || ''}`
+    });
+
+        return this.http.post(`${this.apiUrl}/Rss/CekVeKaydet?page=0&pagesize=100`, { feedUrl: rssUrl, kategoriId: kategoriId }, { headers });
     }
 
     getMostReadNews(): Observable<Haber[]> {
-        return this.http.get<Haber[]>(`${this.apiUrl}/most-read`);
+        return this.http.get<Haber[]>(`${this.apiUrl}/Haberler/most-read`);
     }
 
     getMostClickedNews(): Observable<Haber[]> {
-        return this.http.get<Haber[]>(`${this.apiUrl}/most-clicked`);
+        return this.http.get<Haber[]>(`${this.apiUrl}/Haberler/most-clicked`);
     }
 
     getTop5ReadNews(): Observable<Haber[]> {
-      return this.http.get<Haber[]>(`${this.apiUrl}/GetTop5ReadNews`);
+      return this.http.get<Haber[]>(`${this.apiUrl}/Haberler/GetTop5ReadNews`);
     }
 
     incrementReadCount(id: number): Observable<any> {
-        return this.http.post(`${this.apiUrl}/${id}/okundu`, {});
+        return this.http.post(`${this.apiUrl}/${id}/Haberler/okundu`, {});
     }
 
     incrementClickCount(id: number): Observable<any> {
-        return this.http.post(`${this.apiUrl}/${id}/tiklandi`, {});
+        return this.http.post(`${this.apiUrl}/${id}/Haberler/tiklandi`, {});
     }
 
     // Haber başlığını URL-friendly slug'a çevir
